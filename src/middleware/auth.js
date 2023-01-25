@@ -15,7 +15,7 @@ const authRoutes = async (req, res, next) => {
       })
       await V4.verify(tokenHeader, key, {
         audience: 'urn:client:claim',
-        issuer: 'http://localhost:4600',
+        issuer: 'http://localhost:4800',
         clockTolerance: '1 min',
       }).then(r => {
         req.user = {

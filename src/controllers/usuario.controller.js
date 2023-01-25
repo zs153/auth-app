@@ -1,14 +1,14 @@
 import axios from 'axios'
 import bcrypt from 'bcrypt'
-import { puerto, serverAPI } from '../config/settings'
+import { puertoAPI, serverAPI } from '../config/settings'
 import { tiposRol, estadosUsuario } from '../public/js/enumeraciones'
 
 export const mainPage = async (req, res) => {
   const user = req.user
   const usuario = {}
-  
+
   try {
-    const result = await axios.post(`http://${serverAPI}:${puerto}/api/usuarios`, {
+    const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios`, {
       usuario,
     })
     const datos = {
@@ -43,7 +43,7 @@ export const editPage = async (req, res) => {
   }
 
   try {
-    const result = await axios.post(`http://${serverAPI}:${puerto}/api/usuario`, {
+    const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
       usuario,
     })
     const datos = {
@@ -72,7 +72,7 @@ export const insert = async (req, res) => {
   }
 
   try {
-    await axios.post(`http://${serverAPI}:${puerto}/api/usuarios/insert`, {
+    await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/insert`, {
       usuario,
     })
 
@@ -94,7 +94,7 @@ export const update = async (req, res) => {
   }
 
   try {
-    await axios.post(`http://${serverAPI}:${puerto}/api/usuarios/update`, {
+    await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/update`, {
       usuario,
     })
 
@@ -115,7 +115,7 @@ export const remove = async (req, res) => {
   }
 
   try {
-    await axios.post(`http://${serverAPI}:${puerto}/api/usuarios/delete`, {
+    await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/delete`, {
       usuario,
     })
 

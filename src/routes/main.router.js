@@ -1,15 +1,10 @@
 import express from "express";
-import { logoutPage, loginPage, autorizar, olvido, forgotPage } from "../controllers/main.controller";
+import { logoutPage, loginPage, autorizar, olvido, forgotPage, mainPage } from "../controllers/main.controller";
+import authRoutes from "../middleware/auth";
 
 const mainRouter = express.Router();
 
-// acciones
-mainRouter.get("/login", loginPage);
-mainRouter.get("/logout", logoutPage)
-mainRouter.get("/forgot", forgotPage)
-
-// proc
-mainRouter.post("/autorizar", autorizar)
-mainRouter.post("/forgot", olvido)
+// pages
+mainRouter.get('/', authRoutes, mainPage)
 
 export default mainRouter;
