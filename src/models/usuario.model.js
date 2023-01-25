@@ -13,22 +13,22 @@ const insertSql = `BEGIN RESOURCES_PKG.INSERTUSUARIO(
   :idusua
 ); END;
 `;
-const updateSql = `BEGIN OPORRAK_PKG.UPDATEUSUARIO(
+const updateSql = `BEGIN RESOURCES_PKG.UPDATEUSUARIO(
   :idusua,
   :emausu, 
   :rolusu
 ); END;
 `;
-const removeSql = `BEGIN OPORRAK_PKG.DELETEUSUARIO(
+const removeSql = `BEGIN RESOURCES_PKG.DELETEUSUARIO(
   :idusua 
 ); END;
 `;
-const cambioSql = `BEGIN OPORRAK_PKG.CHANGEPASSWORD(
+const cambioSql = `BEGIN RESOURCES_PKG.CHANGEPASSWORD(
   :idusua,
   :pwdusu
 ); END;
 `;
-const olvidoSql = `BEGIN OPORRAK_PKG.FORGOTPASSWORD(
+const olvidoSql = `BEGIN RESOURCES_PKG.FORGOTPASSWORD(
   :emausu,
   :pwdusu,
   :seed
@@ -50,7 +50,7 @@ export const find = async (context) => {
     query += "WHERE uu.emausu = :emausu";
   }
 
-  const result = await simpleExecute(query, binds);  
+  const result = await simpleExecute(query, binds);
   return result.rows;
 };
 export const insert = async (bind) => {
@@ -111,6 +111,7 @@ export const change = async (bind) => {
 export const forgot = async (bind) => {
   let result;
 
+  console.log(olvidoSql, bind)
   try {
     await simpleExecute(olvidoSql, bind);
 
