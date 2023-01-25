@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Usuarios</title>
+  <link rel="icon" href="/img/favicon.ico" type="image/x-icon" />
+  <!-- styles -->
+  <link rel="stylesheet" href="/css/styles.css">
+
+<body class="antialiased">
+  <div class="wrapper">
+    <%- include('../../partials/header') %>
+    <%- include('../../partials/navbar', {opcion: 'ADMINISTRACION' }) %>
+    <div class="page-wrapper">
+      <div class="page-body">
+        <div class="container-xl">
+          <div class="row">
+            <div class="col-12">
+              <div class="card mt-3">
+                <form action="/admin/usuarios/insert" method="POST" onsubmit="return validate();">
+                  <div class="card-header">
+                    <h3 class="card-title">Usuario</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-2">
+                        <div class="mb-1">
+                          <div class="input-control">
+                            <label class="form-label required">UserID</label>
+                            <input type="text" name="userid" id="userid" class="form-control"
+                              style="text-transform: lowercase;" value="" autofocus />
+                            <div class="invalid-feedback"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-8">
+                        <div class="mb-1">
+                          <div class="input-control">
+                            <label class="form-label required">Nombre</label>
+                            <input type="text" name="nomusu" id="nomusu" class="form-control"
+                              style="text-transform: uppercase;" value="" />
+                            <div class="invalid-feedback"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-2">
+                        <div class="mb-1">
+                          <div class="input-control">
+                            <div class="form-label required">Estado</div>
+                            <select class="form-select form-control" id="cboest" name="stausu" value="">
+                              <option value="0">SELECCIONE ESTADO</option>
+                              <% datos.arrEstadosUsuario.map(element=> { %>
+                              <option value="<%= element.id %>">
+                                <%= element.des %>
+                              </option>
+                              <% }) %>
+                            </select>
+                            <div class="invalid-feedback"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-10">
+                        <div class="mb-1">
+                          <div class="input-control">
+                            <label class="form-label required">Correo electrónico</label>
+                            <input type="text" name="emausu" id="emausu" class="form-control" value="" />
+                            <div class="invalid-feedback"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-2">
+                        <div class="mb-1">
+                          <div class="input-control">
+                            <label class="form-label required">Teléfono</label>
+                            <input type="text" name="telusu" id="telusu" class="form-control" value="" />
+                            <div class="invalid-feedback"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-4">
+                        <div class="mb-1">
+                          <div class="input-control">
+                            <div class="form-label required">Oficina</div>
+                            <select class="form-select form-control" id="cboofi" name="ofiusu" value="">
+                              <option value="0">SELECCIONE OFICINA</option>
+                              <% datos.oficinas.map(element=> { %>
+                              <option value="<%- element.IDOFIC %>">
+                                <%- element.DESOFI %>
+                              </option>
+                              <% }) %>
+                            </select>
+                            <div class="invalid-feedback"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="mb-1">
+                          <div class="input-control">
+                            <div class="form-label required">Rol</div>
+                            <select class="form-select form-control" id="cborol" name="rolusu" value="">
+                              <option value="0">SELECCIONE ROL</option>
+                              <% datos.filteredRol.map(element=> { %>
+                              <option value="<%- element.id %>">
+                                <%- element.des %>
+                              </option>
+                              <% }) %>
+                            </select>
+                            <div class="invalid-feedback"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="mb-1">
+                          <div class="input-control">
+                            <div class="form-label required">Perfil</div>
+                            <select class="form-select form-control" id="cboper" name="perusu" value="">
+                              <option value="0">SELECCIONE PERFIL</option>
+                              <% datos.arrTiposPerfil.map(element=> { %>
+                              <option value="<%- element.id %>">
+                                <%- element.des %>
+                              </option>
+                              <% }) %>
+                            </select>
+                            <div class="invalid-feedback"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-footer text-end">
+                    <div class="d-flex">
+                      <a href="/admin/usuarios" class="btn btn-white">Cancelar</a>
+                      <button type="submit" class="btn btn-success ms-auto" id="btnInsert">Crear nuevo usuario</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('../../partials/footer') %>
+  </div>
+
+  <script src="/js/ayuda.min.js"></script>
+  <script>
+    const userid = document.getElementById('userid')
+    const nomusu = document.getElementById('nomusu')
+    const emausu = document.getElementById('emausu')
+    const telusu = document.getElementById('telusu')
+    const cboest = document.getElementById('cboest')
+    const cboofi = document.getElementById('cboofi')
+    const cborol = document.getElementById('cborol')
+    const cboper = document.getElementById('cboper')
+
+    const validate = () => {
+      const useridValue = userid.value.trim()
+      const nomusuValue = nomusu.value.trim()
+      const emausuValue = emausu.value.trim()
+      const telusuValue = telusu.value.trim()
+      const cboestValue = cboest.value
+      const cboofiValue = cboofi.value
+      const cborolValue = cborol.value
+      const cboperValue = cboper.value
+
+      if (useridValue === '') {
+        setError(userid, 'UserID requerido')
+        setTimeout(function () {
+          setSuccess(userid)
+        }, 3000)
+        return false
+      }
+      if (nomusuValue === '') {
+        setError(nomusu, 'Nombre requerido')
+        setTimeout(function () {
+          setSuccess(nomusu)
+        }, 3000)
+        return false
+      }
+      if (cboestValue === '0') {
+        setError(cboest, 'Estado requerido')
+        setTimeout(function () {
+          setSuccess(cboest)
+        }, 3000)
+        return false
+      }
+      if (emausuValue === '') {
+        setError(emausu, 'Email requerido')
+        setTimeout(function () {
+          setSuccess(emausu)
+        }, 3000)
+        return false
+      }
+      if (telusuValue === '') {
+        setError(telusu, 'Teléfono requerido')
+        setTimeout(function () {
+          setSuccess(telusu)
+        }, 3000)
+        return false
+      }
+      if (cboofiValue === '0') {
+        setError(cboofi, 'Oficina requerida')
+        setTimeout(function () {
+          setSuccess(cboofi)
+        }, 3000)
+        return false
+      }
+      if (cborolValue === '0') {
+        setError(cborol, 'Rol requerido')
+        setTimeout(function () {
+          setSuccess(cborol)
+        }, 3000)
+        return false
+      }
+      if (cboperValue === '0') {
+        setError(cboper, 'Perfil requerido')
+        setTimeout(function () {
+          setSuccess(cboper)
+        }, 3000)
+        return false
+      }
+
+      return true
+    }
+
+    const setSuccess = (element) => {
+      const inputControl = element.parentElement;
+      const errorDisplay = inputControl.querySelector('.invalid-feedback');
+      errorDisplay.innerText = '';
+      inputControl.classList.add('is-valid');
+      element.classList.remove('is-invalid');
+    }
+    const setError = (element, message) => {
+      const inputControl = element.parentElement;
+      const errorDisplay = inputControl.querySelector('.invalid-feedback');
+      errorDisplay.innerText = message;
+      element.classList.add('is-invalid');
+      inputControl.classList.remove('is-valid');
+    }
+  </script>
+</body>
+
+</html>

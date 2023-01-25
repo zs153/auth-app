@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Oporrak</title>
+  <link rel="icon" href="/img/favicon.ico" type="image/x-icon">
+  <!-- styles -->
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body class="antialiased">
+  <div class="wrapper">
+    <%- include('../partials/header') %>
+    <%- include('../partials/navbar', {opcion: 'INICIO'}) %>
+    <div class="page-wrapper">
+      <div class="page-body">
+        <div class="container-xl">
+          <div class="row row-cards">
+            <div class="col-md-6">
+              <div class="row row-cards">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <div class="card-title">
+                        Administración
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div class="row g-3">
+                        <% datos.estados.map(itm => { %>
+                          <% if (itm.PERROL === 1) { %>
+                            <div class="col-6">
+                              <div class="row align-items-center">
+                                <% if(itm.TIPEST === 1) {%>
+                                <span class="avatar avatar-rounded bg-green-lt">
+                                  <h6>
+                                    <%- itm.USERID.slice(0,5) %>
+                                  </h6>
+                                </span>
+                                <div class="col text-truncate">
+                                  <span style="font-size: .7rem;">
+                                    <%- itm.NOMUSU.slice(0,33) %>
+                                  </span>
+                                  <div class="col text-truncate text-muted">
+                                    <span style="font-size: .6rem;">
+                                      Oficina: <%- itm.DESOFI %>
+                                    </span>
+                                    <span style="font-size: .7rem; margin-left: 1rem;">
+                                      Tlf: <%- itm.TELUSU %>
+                                    </span>
+                                  </div>
+                                </div>
+                                <% } else { %>
+                                <span class="avatar avatar-rounded bg-red-lt">
+                                  <h6>
+                                    <%- itm.USERID.slice(0,5) %>
+                                  </h6>
+                                </span>
+                                <div class="col text-truncate">
+                                  <span style="font-size: .7rem;">
+                                    <%- itm.NOMUSU.slice(0,33) %>
+                                  </span>
+                                  <div class="col text-muted">
+                                    <span style="color: red;font-size: .7rem;">
+                                      NO DISPONIBLE
+                                    </span>
+                                  </div>
+                                </div>
+                                <% } %>
+                              </div>
+                            </div>
+                          <% } %>
+                        <% }) %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <div class="card-title">
+                        Responsables
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div class="row g-3">
+                        <% datos.estados.map(itm=> { %>
+                        <% if (itm.PERROL === 2) { %>
+                        <div class="col-6">
+                          <div class="row align-items-center">
+                            <% if(itm.TIPEST === 1) {%>
+                              <span class="avatar avatar-rounded bg-green-lt">
+                                <h6>
+                                  <%- itm.USERID.slice(0,5) %>
+                                </h6>
+                              </span>
+                              <div class="col text-truncate">
+                                <span style="font-size: .7rem;">
+                                  <%- itm.NOMUSU.slice(0,33) %>
+                                </span>
+                                <div class="col text-truncate text-muted">
+                                  <span style="font-size: .6rem;">
+                                    Oficina: <%- itm.DESOFI %>
+                                  </span>
+                                  <span style="font-size: .7rem; margin-left: 1rem;">
+                                    Tlf: <%- itm.TELUSU %>
+                                  </span>
+                                </div>
+                            </div>
+                            <% } else { %>
+                              <span class="avatar avatar-rounded bg-red-lt">
+                                <h6>
+                                  <%- itm.USERID.slice(0,5) %>
+                                </h6>
+                              </span>
+                              <div class="col text-truncate">
+                                <span style="font-size: .7rem;">
+                                  <%- itm.NOMUSU.slice(0,33) %>
+                                </span>
+                                <div class="col text-muted">
+                                  <span style="color: red;font-size: .7rem;">
+                                    NO DISPONIBLE
+                                  </span>
+                                </div>
+                              </div>
+                            <% } %>
+                          </div>
+                        </div>
+                        <% } %>
+                        <% }) %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <div class="card-title">
+                        Liquidadores
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div class="row g-3">
+                        <% datos.estados.map(itm=> { %>
+                        <% if (itm.PERROL === 8) { %>
+                        <div class="col-6">
+                          <div class="row align-items-center">
+                            <% if(itm.TIPEST === 1) {%>
+                              <span class="avatar avatar-rounded bg-green-lt">
+                                <h6>
+                                  <%- itm.USERID.slice(0,5) %>
+                                </h6>
+                              </span>
+                              <div class="col text-truncate">
+                                <span style="font-size: .7rem;">
+                                  <%- itm.NOMUSU.slice(0,33) %>
+                                </span>
+                                <div class="col text-truncate text-muted">
+                                  <span style="font-size: .6rem;">
+                                    Oficina: <%- itm.DESOFI %>
+                                  </span>
+                                  <span style="font-size: .7rem; margin-left: 1rem;">
+                                    Tlf: <%- itm.TELUSU %>
+                                  </span>
+                                </div>
+                              </div>
+                              <% } else { %>
+                                <span class="avatar avatar-rounded bg-red-lt">
+                                  <h6>
+                                    <%- itm.USERID.slice(0,5) %>
+                                  </h6>
+                                </span>
+                                <div class="col text-truncate">
+                                  <span style="font-size: .7rem;">
+                                    <%- itm.NOMUSU.slice(0,33) %>
+                                  </span>
+                                  <div class="col text-muted">
+                                    <span style="color: red;font-size: .7rem;">
+                                      NO DISPONIBLE
+                                    </span>
+                                  </div>
+                                </div>
+                                <% } %>
+                          </div>
+                        </div>
+                        <% } %>
+                        <% }) %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="row row-cards">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <div class="card-title">
+                        Informadores
+                      </div>
+                    </div>
+                    <div class="list-group list-group-flush overflow-auto" style="max-height: 62.4rem">
+                      <% oficinaActual = '' %>
+                      <% datos.estados.map(itm => { %>
+                      <% if (itm.PERROL === 3) { %>
+                      <% if (itm.DESOFI !== oficinaActual) { %>
+                      <div class="list-group-header sticky-top">
+                        <%- itm.DESOFI %>
+                        <% oficinaActual = itm.DESOFI %>
+                      </div>
+                      <% } %>
+                      <div class="list-group-item">
+                        <div class="row">
+                          <% if(itm.TIPEST === 1) {%>
+                          <span class="avatar avatar-rounded bg-green-lt">
+                            <h6>
+                              <%- itm.USERID.slice(0,5) %>
+                            </h6>
+                          </span>
+                          <div class="col text-truncate">
+                            <span style="font-size: .7rem;">
+                              <%- itm.NOMUSU.slice(0,33) %>
+                            </span>
+                            <div class="col text-truncate text-muted">
+                              <span style="font-size: .6rem;">
+                                Oficina: <%- itm.DESOFI %>
+                              </span>
+                              <span style="font-size: .7rem; margin-left: 1rem;">
+                                Tlf: <%- itm.TELUSU %>
+                              </span>
+                            </div>
+                          </div>
+                          <% } else { %>
+                          <span class="avatar avatar-rounded bg-red-lt">
+                            <h6>
+                              <%- itm.USERID.slice(0,5) %>
+                            </h6>
+                          </span>
+                          <div class="col text-truncate">
+                            <span style="font-size: .7rem;">
+                              <%- itm.NOMUSU.slice(0,33) %>
+                            </span>
+                            <div class="col text-muted">
+                              <span style="color: red;font-size: .7rem;">
+                                NO DISPONIBLE
+                              </span>
+                            </div>
+                          </div>
+                          <% } %>
+                        </div>
+                      </div>
+                      <% } %>
+                      <% }) %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('../partials/footer') %>
+  </div>
+
+  <div class="modal modal-blur fade" id="modal-matricula" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <h1 class="text-center">Matriculaciones de Curso Disponibles</h1>
+          </div>
+          <div class="modal-footer">
+            <div class="w-100">
+              <div class="row">
+                <div class="col">
+                  <a href="#" class="btn btn-white w-100" onclick="closeModal()" data-bs-dismiss="modal">No estoy interesado</a>
+                </div>
+                <div class="col">
+                  <a href="/admin/formacion/matriculas" class="btn btn-white w-100">Ir a matriculaciones</a>
+                </div>
+              </div>
+              <div>
+                <p>
+                  <label class="form-check">
+                    <input class="form-check-input" id="checkShow" name="checkShow" type="checkbox" <%- datos.noVerPanel ? "": "checked" %>>
+                    <span class="form-check-label">No mostrar más este mensaje</span>
+                  </label>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  
+  <script src="/js/ayuda.min.js"></script>
+  <script>
+    const noVerPanel = <%- JSON.stringify(datos.noVerPanel) %>
+    const openModal = () => {
+      const modal = document.getElementById('modal-matricula')
+
+      modal.style.display = 'block'
+      modal.setAttribute('aria-hidden', 'false', 'show')
+      modal.classList.add('show')
+    }
+    const closeModal = () => {
+      const modal = document.getElementById('modal-matricula')
+
+      modal.setAttribute('aria-hidden', 'true');
+      modal.classList.remove('show');
+      modal.style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      if (noVerPanel === "0") {
+        openModal()
+      }
+    })
+    document.getElementById('checkShow').addEventListener('change', (itm) => {
+      if (itm.target.checked) {
+        document.cookie = "noVer=1"
+      } else {
+        document.cookie = "noVer=0"
+      }
+    })
+  </script>
+</body>
+
+</html>

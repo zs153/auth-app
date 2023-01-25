@@ -1,0 +1,43 @@
+{
+  "name": "clientserver",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "server": "pm2 start ./dist/bin/www",
+    "babel": "babel src -d dist --copy-files",
+    "start": "node ./dist/bin/www",
+    "startdev": "nodemon --exec babel-node ./src/bin/www"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.6",
+    "axios": "^0.27.2",
+    "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.6",
+    "debug": "^4.3.3",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "express-ejs-layouts": "^2.5.1",
+    "jsonwebtoken": "9.0.0",
+    "morgan": "^1.10.0",
+    "oracledb": "^5.5.0",
+    "paseto": "^3.1.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.17.3",
+    "@babel/core": "^7.17.4",
+    "@babel/node": "^7.16.8",
+    "@babel/plugin-transform-runtime": "^7.17.0",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/register": "^7.17.0",
+    "@babel/runtime": "^7.17.2",
+    "cssnano": "^5.1.5",
+    "grunt": "^1.5.3",
+    "grunt-contrib-clean": "^2.0.1",
+    "grunt-contrib-concat": "^2.1.0",
+    "grunt-contrib-uglify": "^5.2.2",
+    "nodemon": "^2.0.15",
+    "postcss": "^8.4.12",
+    "postcss-cli": "^9.1.0"
+  }
+}
