@@ -1,0 +1,35 @@
+{
+  "name": "auth",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "server": "pm2 start ./dist/bin/www",
+    "babel": "babel src -d dist --copy-files",
+    "start": "node ./dist/bin/www",
+    "startdev": "nodemon --exec babel-node ./src/index"
+  },
+  "dependencies": {
+    "axios": "^1.2.1",
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "debug": "^4.3.4",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-ejs-layouts": "^2.5.1",
+    "morgan": "^1.10.0",
+    "oracledb": "^5.5.0",
+    "paseto": "^3.1.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.20.7",
+    "@babel/node": "^7.20.7",
+    "@babel/plugin-transform-runtime": "^7.19.6",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/register": "^7.18.9",
+    "@babel/runtime": "^7.20.7",
+    "nodemon": "^2.0.20"
+  }
+}
