@@ -7,16 +7,20 @@ FROM usuarios uu
 `;
 const insertSql = `BEGIN RESOURCES_PKG.INSERTUSUARIO(
   :userid,
+  :nomusu,
   :emausu,
   :rolusu,
   :pwdusu,
+  :stausu,
   :idusua
 ); END;
 `;
 const updateSql = `BEGIN RESOURCES_PKG.UPDATEUSUARIO(
   :idusua,
+  :nomusu,
   :emausu, 
-  :rolusu
+  :rolusu,
+  :stausu
 ); END;
 `;
 const removeSql = `BEGIN RESOURCES_PKG.DELETEUSUARIO(
@@ -111,7 +115,6 @@ export const change = async (bind) => {
 export const forgot = async (bind) => {
   let result;
 
-  console.log(olvidoSql, bind)
   try {
     await simpleExecute(olvidoSql, bind);
 

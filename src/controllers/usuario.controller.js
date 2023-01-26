@@ -3,9 +3,11 @@ import * as DAL from '../models/usuario.model'
 const insertFromRec = (req) => {
   const usuario = {
     userid: req.body.usuario.USERID,
+    nomusu: req.body.usuario.NOMUSU,
     emausu: req.body.usuario.EMAUSU,
     rolusu: req.body.usuario.ROLUSU,
     pwdusu: req.body.usuario.PWDUSU,
+    stausu: req.body.usuario.STAUSU,
   }
 
   return usuario;
@@ -13,8 +15,10 @@ const insertFromRec = (req) => {
 const updateFromRec = (req) => {
   const usuario = {
     idusua: req.body.usuario.IDUSUA,
+    nomusu: req.body.usuario.NOMUSU,
     emausu: req.body.usuario.EMAUSU,
     rolusu: req.body.usuario.ROLUSU,
+    stausu: req.body.usuario.STAUSU,
   }
 
   return usuario;
@@ -43,6 +47,7 @@ export const usuario = async (req, res) => {
       res.status(404).end()
     }
   } catch (err) {
+    console.log(err)
     res.status(500).end()
   }
 }
@@ -105,4 +110,3 @@ export const forgot = async (req, res) => {
     res.status(500).end()
   }
 }
-
