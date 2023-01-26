@@ -13,7 +13,6 @@
 <body class="antialiased">
   <div class="wrapper">
     <%- include('../../partials/header') %>
-    <%- include('../../partials/navbar', {opcion: 'ADMINISTRACION' }) %>
     <div class="page-wrapper">
       <div class="page-body">
         <div class="container-xl">
@@ -49,9 +48,9 @@
                       <div class="col-2">
                         <div class="mb-1">
                           <div class="input-control">
-                            <div class="form-label required">Estado</div>
+                            <div class="form-label">Estado</div>
                             <select class="form-select form-control" id="cboest" name="stausu" value="">
-                              <option value="0">SELECCIONE ESTADO</option>
+                              <option value="-1">SELECCIONE ESTADO</option>
                               <% datos.arrEstadosUsuario.map(element=> { %>
                               <option value="<%= element.id %>">
                                 <%= element.des %>
@@ -76,7 +75,7 @@
                       <div class="col-4">
                         <div class="mb-1">
                           <div class="input-control">
-                            <div class="form-label required">Rol</div>
+                            <div class="form-label">Rol</div>
                             <select class="form-select form-control" id="cborol" name="rolusu" value="">
                               <option value="0">SELECCIONE ROL</option>
                               <% datos.arrTiposRol.map(element=> { %>
@@ -112,21 +111,15 @@
     const userid = document.getElementById('userid')
     const nomusu = document.getElementById('nomusu')
     const emausu = document.getElementById('emausu')
-    const telusu = document.getElementById('telusu')
     const cboest = document.getElementById('cboest')
-    const cboofi = document.getElementById('cboofi')
     const cborol = document.getElementById('cborol')
-    const cboper = document.getElementById('cboper')
 
     const validate = () => {
       const useridValue = userid.value.trim()
       const nomusuValue = nomusu.value.trim()
       const emausuValue = emausu.value.trim()
-      const telusuValue = telusu.value.trim()
       const cboestValue = cboest.value
-      const cboofiValue = cboofi.value
       const cborolValue = cborol.value
-      const cboperValue = cboper.value
 
       if (useridValue === '') {
         setError(userid, 'UserID requerido')
@@ -142,7 +135,7 @@
         }, 3000)
         return false
       }
-      if (cboestValue === '0') {
+      if (cboestValue === '-1') {
         setError(cboest, 'Estado requerido')
         setTimeout(function () {
           setSuccess(cboest)
@@ -156,31 +149,10 @@
         }, 3000)
         return false
       }
-      if (telusuValue === '') {
-        setError(telusu, 'Teléfono requerido')
-        setTimeout(function () {
-          setSuccess(telusu)
-        }, 3000)
-        return false
-      }
-      if (cboofiValue === '0') {
-        setError(cboofi, 'Oficina requerida')
-        setTimeout(function () {
-          setSuccess(cboofi)
-        }, 3000)
-        return false
-      }
       if (cborolValue === '0') {
         setError(cborol, 'Rol requerido')
         setTimeout(function () {
           setSuccess(cborol)
-        }, 3000)
-        return false
-      }
-      if (cboperValue === '0') {
-        setError(cboper, 'Perfil requerido')
-        setTimeout(function () {
-          setSuccess(cboper)
         }, 3000)
         return false
       }

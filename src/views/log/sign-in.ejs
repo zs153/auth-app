@@ -17,7 +17,7 @@
       <div class="text-center mb-4">
         <a href="."><img src="/img/resourcesLogo.png" height="36" alt="Recursos" /></a>
       </div>
-      <% if(typeof alerts !=='undefined' ) { %>
+      <% if(typeof alerts !== 'undefined' ) { %>
         <% alerts.map(function (alert){ %>
           <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <%- alert.msg %>

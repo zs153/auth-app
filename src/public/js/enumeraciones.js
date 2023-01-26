@@ -143,7 +143,6 @@ export const tiposEstado = {
 
 /* arrays */
 export const arrTiposRol = [
-  { id: 0, des: 'INDEFINIDO' },
   { id: 1, des: 'USUARIO' },
   { id: 2, des: 'RESPONSABLE' },
   { id: 3, des: 'ADMINISTRADOR' },

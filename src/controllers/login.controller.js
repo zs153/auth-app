@@ -40,74 +40,66 @@ export const autorizar = async (req, res) => {
   try {
     const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
       usuario,
-    });    
+    });
 
     usuario = result.data
-    if (usuario) {
-      // password
-      const pwdusu = req.body.pwdusu
+    const pwdusu = req.body.pwdusu
 
-      // verifica contaseña
-      bcrypt.compare(pwdusu, usuario.PWDUSU, async (err, ret) => {
-        if (err) {
-          res.render('sign-in', {
-            datos: req.body,
-            alerts: [{ msg: 'No se ha podido verificar la identidad del usuario' }]
-          })
+    // verifica contaseña
+    bcrypt.compare(pwdusu, usuario.PWDUSU, async (err, ret) => {
+      if (err) {
+        res.render('sign-in', {
+          datos: req.body,
+          alerts: [{ msg: 'No se ha podido verificar la identidad del usuario' }]
+        })
+      }
+      if (ret) {
+        // payload
+        const payload = {
+          id: usuario.IDUSUA,
+          userid: usuario.USERID,
+          rol: usuario.ROLUSU,
         }
-        if (ret) {
-          // payload
-          const payload = {
-            id: usuario.IDUSUA,
-            userid: usuario.USERID,
-            rol: usuario.ROLUSU,
+        const key = createPrivateKey({
+          'key': privateKey,
+          'format': 'pem',
+          'type': 'pkcs8',
+          'cipher': 'aes-256-cbc',
+          'passphrase': secreto,
+        })
+
+        await V4.sign(payload, key, {
+          audience: 'urn:client:claim',
+          issuer: 'http://localhost:4000',
+          expiresIn: '6 hours',
+        }).then(token => {
+          const options = {
+            path: "/",
+            sameSite: true,
+            maxAge: 1000 * 60 * 60 * 6, // 6 horas
+            httpOnly: true,
           }
-          const key = createPrivateKey({
-            'key': privateKey,
-            'format': 'pem',
-            'type': 'pkcs8',
-            'cipher': 'aes-256-cbc',
-            'passphrase': secreto,
+          res.cookie('auth', token, options)
+          res.cookie('noVer', '0')
+          res.writeHead(302, {
+            'Location': `http://${serverWEB}:${puertoWEB}/admin`,
+            'Content-Type': 'text/plain',
           })
+          res.end()
+        })
+      } else {
+        res.render('log/sign-in', {
+          datos: req.body,
+          alerts: [{ msg: 'La contraseña no es correcta' }]
+        })
+      }
+    });
 
-          await V4.sign(payload, key, {
-            audience: 'urn:client:claim',
-            issuer: 'http://localhost:4800',
-            expiresIn: '6 hours',
-          }).then(token => {
-            const options = {
-              path: "/",
-              sameSite: true,
-              maxAge: 1000 * 60 * 60 * 6, // 6 horas
-              httpOnly: true,
-            }
-            res.cookie('auth', token, options)
-            res.cookie('noVer', '0')
-            res.writeHead(302, {
-              'Location': `http://${serverWEB}:${puertoWEB}/admin`,
-              'Content-Type': 'text/plain',
-            })
-            res.end()
-          })
-        } else {
-          res.render('log/sign-in', {
-            datos: req.body,
-            alerts: [{ msg: 'La contraseña no es correcta' }]
-          })
-        }
-      });
-
-      return
-    } else {
-      res.render('log/sign-in', {
-        datos: req.body,
-        alerts: [{ msg: 'El usuario no existe' }]
-      })
-    }
+    return
   } catch (err) {
     res.render('log/sign-in', {
       datos: req.body,
-      alerts: [{ msg: 'No se ha podido conectar con la base de datos' }]
+      alerts: [{ msg: 'El usuario no existe' }]
     })
   }
 }
