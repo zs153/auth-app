@@ -2,13 +2,16 @@ import axios from "axios";
 import { createPrivateKey } from 'crypto'
 import bcrypt from "bcrypt";
 import { V4 } from 'paseto'
-import { puertoWEB, puertoAPI, serverAPI, serverWEB } from "../config/settings";
+import { puertoWEB, puertoAPI, serverAPI, serverWEB, privateKey, secreto } from "../config/settings";
 
 export const loginPage = async (req, res) => {
   res.render('log/sign-in', { datos: {}, alerts: undefined })
 }
 export const forgotPage = async (req, res) => {
   res.render('log/forgot', { datos: {}, alerts: undefined })
+}
+export const okForgotPage = async (req, res) => {
+  res.render('log/okForgot', { datos: {}, alerts: undefined })
 }
 export const registroPage = async (req, res) => {
   res.render('log/sign-up', { datos: {}, alerts: undefined })
@@ -25,21 +28,22 @@ export const logoutPage = async (req, res) => {
   res.cookie("auth", undefined, options);
   res.cookie("noVer", undefined, options);
 
-  res.redirect('/')
+  res.render('log/logout')
 };
 
 // proc
 export const autorizar = async (req, res) => {
-  const context = {
-    userid: req.body.userid,
+  let usuario = {
+    USERID: req.body.userid,
   }
 
   try {
-    const usuario = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
-      context,
-    });
+    const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+      usuario,
+    });    
 
-    if (usuario.length === 1) {
+    usuario = result.data
+    if (usuario) {
       // password
       const pwdusu = req.body.pwdusu
 
@@ -123,7 +127,7 @@ export const olvido = async (req, res) => {
       context,
     });
 
-    res.redirect('/admin')
+    res.redirect('/log/okForgot')
   } catch (error) {
     console.log(error)
     res.render("log/sign-in", {

@@ -20,9 +20,8 @@ const authRoutes = async (req, res, next) => {
       }).then(r => {
         req.user = {
           id: r.id,
-          userID: r.userid,
+          userid: r.userid,
           rol: r.rol,
-          oficina: r.oficina,
         }
 
         next()

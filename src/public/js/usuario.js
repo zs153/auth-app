@@ -100,27 +100,15 @@ const buildTable = (state) => {
     // col2
     cell = document.createElement('td')
     cell.innerHTML = `<div class="d-flex py-1 align-items-center">
-        <div class="flex-fill">
-          <div class="font-weight-medium">${element.NOMUSU}</div>
-        </div>
+      <div class="flex-fill">
+        <div class="font-weight-medium">${element.NOMUSU}</div>
       </div>
-      <div class="text-muted">
-        <small class="text-reset">Teléfono: ${element.TELUSU}</small>
     </div>`
     row.appendChild(cell)
 
     // col3
     cell = document.createElement('td')
-    cell.innerHTML = `<div class="d-flex py-1 align-items-center">
-      <div class="flex-fill">
-        <div class="font-weight-medium">${element.DESOFI}</div>
-      </div>
-    </div>`
-    row.appendChild(cell)
-
-    // col4
-    cell = document.createElement('td')
-    cell.classList.add("w-5")
+    cell.classList.add("w-4")
     cell.innerHTML = `<ul class="dots-menu">
       <li class="nav-item drop-right">
         <a href="#" class="nav-link">
@@ -149,6 +137,7 @@ const buildTable = (state) => {
       </li>
     </ul>`
     row.appendChild(cell)
+
     table.appendChild(row)
   })
 

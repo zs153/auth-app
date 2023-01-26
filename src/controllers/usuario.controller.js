@@ -1,7 +1,7 @@
 import axios from 'axios'
 import bcrypt from 'bcrypt'
 import { puertoAPI, serverAPI } from '../config/settings'
-import { tiposRol, estadosUsuario } from '../public/js/enumeraciones'
+import { arrTiposRol, arrEstadosUsuario, estadosUsuario } from '../public/js/enumeraciones'
 
 export const mainPage = async (req, res) => {
   const user = req.user
@@ -13,6 +13,7 @@ export const mainPage = async (req, res) => {
     })
     const datos = {
       usuarios: result.data,
+      estadosUsuario,
     }
 
     res.render('admin/usuarios', { user, datos })
@@ -26,8 +27,13 @@ export const mainPage = async (req, res) => {
 }
 export const addPage = async (req, res) => {
   const user = req.user
+  const datos = {
+    arrEstadosUsuario,
+    arrTiposRol,
+  }
+  
   try {
-    res.render('admin/usuarios/add', { user })
+    res.render('admin/usuarios/add', { user, datos })
   } catch (error) {
     const msg = 'No se ha podido acceder a los datos de la aplicación.'
 
@@ -48,6 +54,8 @@ export const editPage = async (req, res) => {
     })
     const datos = {
       usuario: result.data,
+      arrEstadosUsuario,
+      arrTiposRol,
     }
 
     res.render('admin/usuarios/edit', { user, datos })
@@ -66,9 +74,11 @@ export const insert = async (req, res) => {
   const passHash = await bcrypt.hash(randomString, salt);
   const usuario = {
     USERID: req.body.userid.toLowerCase(),
+    NOMUSU: req.body.nomusu.toUpperCase(),
     EMAUSU: req.body.emausu,
-    ROLUSU: tiposRol.usuario,
+    ROLUSU: req.body.rolusu,
     PWDUSU: passHash,
+    STAUSU: req.body.stausu,
   }
 
   try {
@@ -76,7 +86,7 @@ export const insert = async (req, res) => {
       usuario,
     })
 
-    res.redirect('/admin/usuarios')
+    res.redirect('/admin')
   } catch (error) {
     let msg = 'No se ha podido crear el nuevo usuario.'
 
@@ -89,8 +99,10 @@ export const update = async (req, res) => {
   const user = req.user
   const usuario = {
     IDUSUA: req.body.idusua,
+    NOMUSU: req.body.nomusu.toUpperCase(),
     EMAUSU: req.body.emausu,
     ROLUSU: req.body.rolusu,
+    STAUSU: req.body.stausu
   }
 
   try {
@@ -98,7 +110,7 @@ export const update = async (req, res) => {
       usuario,
     })
 
-    res.redirect('/admin/usuarios')
+    res.redirect('/admin')
   } catch (error) {
     let msg =
       'No se han podido modificar los datos del usuario.'
@@ -119,7 +131,7 @@ export const remove = async (req, res) => {
       usuario,
     })
 
-    res.redirect('/admin/usuarios')
+    res.redirect('/admin')
   } catch (error) {
     const msg = 'No se ha podido borrar el usuario.'
 

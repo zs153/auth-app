@@ -1,10 +1,7 @@
 // pages
 export const mainPage = async (req, res) => {
-  const user = {}
+  const user = req.user
   const datos = {}
 
-  res.render('admin', {
-    user,
-    datos,
-  })
+  res.render('admin', { user, datos })
 }
