@@ -22,16 +22,11 @@
         <p class="empty-subtitle text-muted">
           La contraseña puede cambiarse en el menu de usuario una vez iniciada la sesión
         </p>
-        <% if(typeof alerts !=='undefined' ) { %>
-          <% alerts.map(function (alert){ %>
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-              <%- alert.msg %>
-            </div>
-            <% }) %>
-              <% } %>
-                <div class="empty-action">
-                  <a href="/" class="btn btn-primary">Iniciar sesión</a>
-                </div>
+          <div class="empty-action">
+						<input type="hidden" name="url" value="<%- url %>">
+	          <a href="http://<%- url %>/admin" class="btn btn-primary">Iniciar sesión</a>
+            <!-- <a href="/" class="btn btn-primary">Iniciar sesión</a> -->
+          </div>
       </div>
     </div>
   </div>

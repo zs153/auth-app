@@ -5,10 +5,14 @@ import { V4 } from 'paseto'
 import { puertoWEB, puertoAPI, serverAPI, serverWEB, privateKey, secreto } from "../config/settings";
 
 export const loginPage = async (req, res) => {
-  res.render('log/sign-in', { datos: {}, alerts: undefined })
+	const url = req.query.valid
+
+  res.render('log/sign-in', { datos: {url}, alerts: undefined })
 }
 export const forgotPage = async (req, res) => {
-  res.render('log/forgot', { datos: {}, alerts: undefined })
+  const url = req.query.valid
+
+  res.render('log/forgot', { datos: {url}, alerts: undefined })
 }
 export const okForgotPage = async (req, res) => {
   res.render('log/okForgot', { datos: {}, alerts: undefined })
@@ -54,7 +58,7 @@ export const autorizar = async (req, res) => {
         })
       }
       if (ret) {
-        // payload
+	  		const url = req.body.url
         const payload = {
           id: usuario.IDUSUA,
           userid: usuario.USERID,

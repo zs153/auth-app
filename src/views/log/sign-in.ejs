@@ -25,6 +25,7 @@
           <% }) %>
             <% } %>
               <form class="card card-md" action="/log/autorizar" method="POST">
+				        <input type="hidden" name="url" value="<%- datos.url %>">
                 <div class="card-body">
                   <h2 class="card-title text-center mb-4">Iniciar sesión</h2>
                   <div class="mb-3">
