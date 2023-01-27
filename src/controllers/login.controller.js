@@ -48,6 +48,7 @@ export const autorizar = async (req, res) => {
 
     usuario = result.data
     const pwdusu = req.body.pwdusu
+	  const url = req.body.url
 
     // verifica contaseña
     bcrypt.compare(pwdusu, usuario.PWDUSU, async (err, ret) => {
@@ -58,7 +59,6 @@ export const autorizar = async (req, res) => {
         })
       }
       if (ret) {
-	  		const url = req.body.url
         const payload = {
           id: usuario.IDUSUA,
           userid: usuario.USERID,
@@ -86,7 +86,7 @@ export const autorizar = async (req, res) => {
           res.cookie('auth', token, options)
           res.cookie('noVer', '0')
           res.writeHead(302, {
-            'Location': `http://${serverWEB}:${puertoWEB}/admin`,
+            'Location': `http://${url}/admin/?valid=${token}`,
             'Content-Type': 'text/plain',
           })
           res.end()
