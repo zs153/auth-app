@@ -5,19 +5,19 @@ import { V4 } from 'paseto'
 import { puertoWEB, puertoAPI, serverAPI, serverWEB, privateKey, secreto } from "../config/settings";
 
 export const loginPage = async (req, res) => {
-	const url = req.query.valid
+  const url = req.query.valid
 
-  res.render('log/sign-in', { datos: {url}, alerts: undefined })
+  res.render('log/sign-in', { datos: { url }, alerts: undefined })
 }
 export const forgotPage = async (req, res) => {
   const url = req.query.valid
 
-  res.render('log/forgot', { datos: {url} })
+  res.render('log/forgot', { datos: { url } })
 }
 export const okForgotPage = async (req, res) => {
   const url = req.query.valid
 
-  res.render('log/okForgot', { datos: {url} })
+  res.render('log/okForgot', { datos: { url } })
 }
 export const registroPage = async (req, res) => {
   res.render('log/sign-up', { datos: {}, alerts: undefined })
@@ -39,6 +39,8 @@ export const logoutPage = async (req, res) => {
 
 // proc
 export const autorizar = async (req, res) => {
+  const pwdusu = req.body.pwdusu
+  const url = req.body.url
   let usuario = {
     USERID: req.body.userid,
   }
@@ -49,8 +51,6 @@ export const autorizar = async (req, res) => {
     });
 
     usuario = result.data
-    const pwdusu = req.body.pwdusu
-	  const url = req.body.url
 
     // verifica contaseña
     bcrypt.compare(pwdusu, usuario.PWDUSU, async (err, ret) => {
@@ -62,9 +62,7 @@ export const autorizar = async (req, res) => {
       }
       if (ret) {
         const payload = {
-          id: usuario.IDUSUA,
           userid: usuario.USERID,
-					rol: usuario.ROLUSU,
         }
         const key = createPrivateKey({
           'key': privateKey,
@@ -79,16 +77,6 @@ export const autorizar = async (req, res) => {
           issuer: 'http://localhost:4000',
           expiresIn: '1 minute',
         }).then(token => {
-					/*
-          const options = {
-            path: "/",
-            sameSite: true,
-            maxAge: 1000 * 60 * 60 * 6, // 6 horas
-            httpOnly: true,
-          }
-          res.cookie('auth', token, options)
-          res.cookie('noVer', '0')
-					*/
           res.writeHead(302, {
             'Location': `http://${url}/admin/?valid=${token}`,
             'Content-Type': 'text/plain',
@@ -121,15 +109,17 @@ export const olvido = async (req, res) => {
     pwdusu: passHash,
     seed,
   }
-	const url = req.body.url
+  const url = req.body.url
 
+  console.log(context)
   try {
     await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/forgot`, {
       context,
     });
-    
-    res.render('log/okForgot', url)
+
+    res.render('log/okForgot', { datos: url })
   } catch (error) {
+    console.log(error)
     res.render("log/sign-in", {
       datos: req.body,
       alerts: [{ msg: 'No se ha podido verificar la identidad del usuario' }]

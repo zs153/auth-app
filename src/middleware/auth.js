@@ -19,9 +19,7 @@ const authRoutes = async (req, res, next) => {
         clockTolerance: '1 min',
       }).then(r => {
         req.user = {
-          id: r.id,
           userid: r.userid,
-          rol: r.rol,
         }
 
         next()
