@@ -12,10 +12,12 @@ export const loginPage = async (req, res) => {
 export const forgotPage = async (req, res) => {
   const url = req.query.valid
 
-  res.render('log/forgot', { datos: {url}, alerts: undefined })
+  res.render('log/forgot', { datos: {url} })
 }
 export const okForgotPage = async (req, res) => {
-  res.render('log/okForgot', { datos: {}, alerts: undefined })
+  const url = req.query.valid
+
+  res.render('log/okForgot', { datos: {url} })
 }
 export const registroPage = async (req, res) => {
   res.render('log/sign-up', { datos: {}, alerts: undefined })
@@ -62,7 +64,7 @@ export const autorizar = async (req, res) => {
         const payload = {
           id: usuario.IDUSUA,
           userid: usuario.USERID,
-          rol: usuario.ROLUSU,
+					rol: usuario.ROLUSU,
         }
         const key = createPrivateKey({
           'key': privateKey,
@@ -75,8 +77,9 @@ export const autorizar = async (req, res) => {
         await V4.sign(payload, key, {
           audience: 'urn:client:claim',
           issuer: 'http://localhost:4000',
-          expiresIn: '6 hours',
+          expiresIn: '1 minute',
         }).then(token => {
+					/*
           const options = {
             path: "/",
             sameSite: true,
@@ -85,6 +88,7 @@ export const autorizar = async (req, res) => {
           }
           res.cookie('auth', token, options)
           res.cookie('noVer', '0')
+					*/
           res.writeHead(302, {
             'Location': `http://${url}/admin/?valid=${token}`,
             'Content-Type': 'text/plain',
@@ -117,15 +121,15 @@ export const olvido = async (req, res) => {
     pwdusu: passHash,
     seed,
   }
+	const url = req.body.url
 
   try {
     await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/forgot`, {
       context,
     });
-
-    res.redirect('/log/okForgot')
+    
+    res.render('log/okForgot', url)
   } catch (error) {
-    console.log(error)
     res.render("log/sign-in", {
       datos: req.body,
       alerts: [{ msg: 'No se ha podido verificar la identidad del usuario' }]
