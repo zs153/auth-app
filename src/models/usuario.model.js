@@ -9,7 +9,6 @@ const insertSql = `BEGIN RESOURCES_PKG.INSERTUSUARIO(
   :userid,
   :nomusu,
   :emausu,
-  :rolusu,
   :pwdusu,
   :stausu,
   :idusua
@@ -19,7 +18,6 @@ const updateSql = `BEGIN RESOURCES_PKG.UPDATEUSUARIO(
   :idusua,
   :nomusu,
   :emausu, 
-  :rolusu,
   :stausu
 ); END;
 `;
