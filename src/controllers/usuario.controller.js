@@ -3,9 +3,7 @@ import * as DAL from '../models/usuario.model'
 const insertFromRec = (req) => {
   const usuario = {
     userid: req.body.usuario.USERID,
-    nomusu: req.body.usuario.NOMUSU,
     emausu: req.body.usuario.EMAUSU,
-    rolusu: req.body.usuario.ROLUSU,
     pwdusu: req.body.usuario.PWDUSU,
     stausu: req.body.usuario.STAUSU,
   }
@@ -14,8 +12,7 @@ const insertFromRec = (req) => {
 }
 const updateFromRec = (req) => {
   const usuario = {
-    idusua: req.body.usuario.IDUSUA,
-    nomusu: req.body.usuario.NOMUSU,
+    userid: req.body.usuario.USERID,
     emausu: req.body.usuario.EMAUSU,
     rolusu: req.body.usuario.ROLUSU,
     stausu: req.body.usuario.STAUSU,
@@ -25,7 +22,7 @@ const updateFromRec = (req) => {
 }
 const deleteFromRec = (req) => {
   const usuario = {
-    idusua: req.body.usuario.IDUSUA,
+    userid: req.body.usuario.USERID,
   }
 
   return usuario;
@@ -44,7 +41,7 @@ export const usuario = async (req, res) => {
     if (result.length === 1) {
       return res.status(200).json(result[0])
     } else {
-      res.status(200).json(null)
+      res.status(404).end()
     }
   } catch (err) {
     res.status(500).end()
@@ -66,7 +63,7 @@ export const insert = async (req, res) => {
     const result = await DAL.insert(insertFromRec(req))
 
     if (result !== null) {
-      res.status(200).json(result)
+      res.status(200).end()
     } else {
       res.status(404).end()
     }
@@ -79,7 +76,7 @@ export const update = async (req, res) => {
     const result = await DAL.update(updateFromRec(req))
 
     if (result !== null) {
-      res.status(200).json(result)
+      res.status(200).end()
     } else {
       res.status(404).end()
     }
@@ -92,7 +89,7 @@ export const remove = async (req, res) => {
     const result = await DAL.remove(deleteFromRec(req))
 
     if (result !== null) {
-      res.status(200).json(result)
+      res.status(200).end()
     } else {
       res.status(404).end()
     }
@@ -102,9 +99,13 @@ export const remove = async (req, res) => {
 }
 export const forgot = async (req, res) => {
   try {
-    await DAL.forgot(forgotFromRec(req))
+    const result = await DAL.forgot(forgotFromRec(req))
 
-    res.status(200).end()
+    if (result !== null) {
+      res.status(200).end()
+    } else {
+      res.status(404).end()
+    }
   } catch (err) {
     res.status(500).end()
   }

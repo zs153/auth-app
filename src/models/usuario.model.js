@@ -5,32 +5,30 @@ const baseQuery = `SELECT
   uu.*
 FROM usuarios uu
 `;
-const insertSql = `BEGIN RESOURCES_PKG.INSERTUSUARIO(
+const insertSql = `BEGIN RECURSOS_PKG.INSERTUSUARIO(
   :userid,
-  :nomusu,
   :emausu,
   :pwdusu,
-  :stausu,
-  :idusua
+  :stausu
 ); END;
 `;
-const updateSql = `BEGIN RESOURCES_PKG.UPDATEUSUARIO(
-  :idusua,
+const updateSql = `BEGIN RECURSOS_PKG.UPDATEUSUARIO(
+  :userid,
   :nomusu,
   :emausu, 
   :stausu
 ); END;
 `;
-const removeSql = `BEGIN RESOURCES_PKG.DELETEUSUARIO(
-  :idusua 
+const removeSql = `BEGIN RECURSOS_PKG.DELETEUSUARIO(
+  :userid 
 ); END;
 `;
-const cambioSql = `BEGIN RESOURCES_PKG.CHANGEPASSWORD(
-  :idusua,
+const cambioSql = `BEGIN RECURSOS_PKG.CHANGEPASSWORD(
+  :userid,
   :pwdusu
 ); END;
 `;
-const olvidoSql = `BEGIN RESOURCES_PKG.FORGOTPASSWORD(
+const olvidoSql = `BEGIN RECURSOS_PKG.FORGOTPASSWORD(
   :emausu,
   :pwdusu,
   :seed
@@ -41,10 +39,7 @@ export const find = async (context) => {
   let query = baseQuery;
   let binds = {};
 
-  if (context.IDUSUA) {
-    binds.idusua = context.IDUSUA;
-    query += "WHERE uu.idusua = :idusua";
-  } else if (context.USERID) {
+  if (context.USERID) {
     binds.userid = context.USERID;
     query += "WHERE uu.userid = :userid";
   } else if (context.EMAUSU) {
@@ -56,15 +51,8 @@ export const find = async (context) => {
   return result.rows;
 };
 export const insert = async (bind) => {
-  bind.idusua = {
-    dir: oracledb.BIND_OUT,
-    type: oracledb.NUMBER,
-  };
-
   try {
-    const result = await simpleExecute(insertSql, bind);
-
-    bind.idusua = await result.outBinds.idusua;
+    await simpleExecute(insertSql, bind);
   } catch (error) {
     bind = null;
   }
@@ -72,54 +60,38 @@ export const insert = async (bind) => {
   return bind;
 };
 export const update = async (bind) => {
-  let result;
-
   try {
     await simpleExecute(updateSql, bind);
-
-    result = bind;
   } catch (error) {
-    result = null;
+    bind = null;
   }
 
-  return result;
+  return bind;
 };
 export const remove = async (bind) => {
-  let result;
-
   try {
     await simpleExecute(removeSql, bind);
-
-    result = bind;
   } catch (error) {
-    result = null;
+    bind = null;
   }
 
-  return result;
+  return bind;
 };
 export const change = async (bind) => {
-  let result;
-
   try {
     await simpleExecute(cambioSql, bind);
-
-    result = bind;
   } catch (error) {
-    result = null;
+    bind = null;
   }
 
-  return result;
+  return bind;
 };
 export const forgot = async (bind) => {
-  let result;
-
   try {
     await simpleExecute(olvidoSql, bind);
-
-    result = bind;
   } catch (error) {
-    result = null;
+    bind = null;
   }
 
-  return result;
+  return bind;
 };
