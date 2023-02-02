@@ -109,17 +109,18 @@ export const olvido = async (req, res) => {
     pwdusu: passHash,
     seed,
   }
-  const url = req.body.url
 
-  console.log(context)
   try {
     await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/forgot`, {
       context,
     });
+		
+		const datos = {
+			url: req.body.url,
+		}
 
-    res.render('log/okForgot', { datos: url })
+    res.render('log/okForgot', datos)
   } catch (error) {
-    console.log(error)
     res.render("log/sign-in", {
       datos: req.body,
       alerts: [{ msg: 'No se ha podido verificar la identidad del usuario' }]

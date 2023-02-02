@@ -17,7 +17,6 @@ export const mainPage = async (req, res) => {
 
     res.render('admin', { user, datos })
   } catch (error) {
-    console.log(error)
     const msg = 'No se ha podido acceder a los datos de la aplicación.'
 
     res.render('admin/error400', {
