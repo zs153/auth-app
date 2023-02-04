@@ -98,10 +98,8 @@ export const insert = async (req, res) => {
 export const update = async (req, res) => {
   const user = req.user
   const usuario = {
-    IDUSUA: req.body.idusua,
-    NOMUSU: req.body.nomusu.toUpperCase(),
+    USERID: req.body.userid,
     EMAUSU: req.body.emausu,
-    ROLUSU: req.body.rolusu,
     STAUSU: req.body.stausu
   }
 

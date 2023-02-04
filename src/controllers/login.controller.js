@@ -14,13 +14,24 @@ export const forgotPage = async (req, res) => {
 
   res.render('log/forgot', { datos: { url } })
 }
+export const changePage = async (req, res) => {
+  const url = req.query.valid
+
+  res.render('log/change', { datos: {}, alerts: undefined })
+}
+export const registroPage = async (req, res) => {
+  //TODO
+  res.render('log/sign-up', { datos: {}, alerts: undefined })
+}
 export const okForgotPage = async (req, res) => {
   const url = req.query.valid
 
   res.render('log/okForgot', { datos: { url } })
 }
-export const registroPage = async (req, res) => {
-  res.render('log/sign-up', { datos: {}, alerts: undefined })
+export const okChangePage = async (req, res) => {
+  const url = req.query.valid
+
+  res.render('log/okChange', { datos: { url } })
 }
 export const logoutPage = async (req, res) => {
   const options = {
@@ -109,15 +120,14 @@ export const olvido = async (req, res) => {
     pwdusu: passHash,
     seed,
   }
+  const datos = {
+    url: req.body.url,
+  }
 
   try {
     await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/forgot`, {
       context,
     });
-		
-		const datos = {
-			url: req.body.url,
-		}
 
     res.render('log/okForgot', datos)
   } catch (error) {
@@ -126,4 +136,28 @@ export const olvido = async (req, res) => {
       alerts: [{ msg: 'No se ha podido verificar la identidad del usuario' }]
     });
   }
-};
+}
+export const change = async (req, res) => {
+  const salt = await bcrypt.genSalt(10);
+  const passHash = await bcrypt.hash(req.body.pwdusu, salt);
+  const context = {
+    emausu: req.body.userid,
+    pwdusu: passHash,
+  }
+  const datos = {
+    url: req.body.url,
+  }
+
+  try {
+    await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/change`, {
+      context,
+    });
+
+    res.render('log/okChange', datos)
+  } catch (error) {
+    res.render("log/sign-in", {
+      datos: req.body,
+      alerts: [{ msg: 'No se ha podido verificar la identidad del usuario' }]
+    });
+  }
+}
