@@ -86,7 +86,7 @@ export const forgot = async (bind) => {
 
   return bind;
 };
-export const change = async (bind) => {
+export const change = async (bind) => {i
   try {
     await simpleExecute(cambioSql, bind);
   } catch (error) {
