@@ -84,8 +84,9 @@
   </div>
 
   <script>
-    const pwdusu = document.getElementById('pwdusu')
     const userid = document.getElementById('userid')
+    const pwdusu = document.getElementById('pwdusu')
+    const pwdact = document.getElementById('pwdact')
     const togglePassword = document.querySelector('#togglePassword');
 
     togglePassword.addEventListener('click', function (e) {
@@ -97,6 +98,7 @@
     const validate = () => {
       const useridValue = userid.value.trim()
       const pwdusuValue = pwdusu.value.trim()
+      const pwdactValue = pwdact.value.trim()
 
       if (useridValue === '') {
         setError(userid, 'Usuario requerido')
@@ -109,6 +111,13 @@
         setError(pwdusu, 'Contraseña requerida')
         setTimeout(function () {
           setSuccess(pwdusu)
+        }, 3000)
+        return false
+      }
+      if (pwdactValue === '') {
+        setError(pwdact, 'Contraseña requerida')
+        setTimeout(function () {
+          setSuccess(pwdact)
         }, 3000)
         return false
       }
