@@ -89,7 +89,7 @@ export const autorizar = async (req, res) => {
           expiresIn: '1 minute',
         }).then(token => {
           res.writeHead(302, {
-            'Location': `http://${url}/admin/?valid=${token}`,
+            'Location': `http://${url}/admin/clean/?valid=${token}`,
             'Content-Type': 'text/plain',
           })
           res.end()
@@ -138,27 +138,20 @@ export const olvido = async (req, res) => {
   }
 }
 export const change = async (req, res) => {
-  const salt = await bcrypt.genSalt(10);
-  const passHash = await bcrypt.hash(req.body.pwdusu, salt);
-  const usuario = {
-    userid: req.body.userid,
-    pwdusu: req.body.pwdact,
-  }
-  const context = {
-    userid: req.body.userid,
-    pwdusu: passHash,
-  }
-  const datos = {
-    url: req.body.url,
+  const pwdact = req.body.pwdact
+  let usuario = {
+    USERID: req.body.userid,
   }
 
   try {
-    const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/usuario`, {
+    const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
       usuario,
     });
 
+    usuario = result.data
+
     // verifica contaseña
-    bcrypt.compare(usuario.pwdusu, result.data.PWDUSU, async (err, ret) => {
+    bcrypt.compare(pwdact, usuario.PWDUSU, async (err, ret) => {
       if (err) {
         res.render('sign-in', {
           datos: req.body,
@@ -166,6 +159,16 @@ export const change = async (req, res) => {
         })
       }
       if (ret) {
+        const salt = await bcrypt.genSalt(10);
+        const passHash = await bcrypt.hash(req.body.pwdusu, salt);
+        const context = {
+          userid: req.body.userid,
+          pwdusu: passHash,
+        }
+        const datos = {
+          url: req.body.url,
+        }
+
         await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/change`, {
           context,
         });
@@ -177,7 +180,7 @@ export const change = async (req, res) => {
         res.render('log/sign-in', {
           datos: req.body,
           alerts: [{ msg: 'La contraseña no es correcta' }]
-        })
+        });
       }
     });
 
