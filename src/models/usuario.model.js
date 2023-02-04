@@ -23,15 +23,15 @@ const removeSql = `BEGIN RECURSOS_PKG.DELETEUSUARIO(
   :userid 
 ); END;
 `;
-const cambioSql = `BEGIN RECURSOS_PKG.CHANGEPASSWORD(
-  :userid,
-  :pwdusu
-); END;
-`;
 const olvidoSql = `BEGIN RECURSOS_PKG.FORGOTPASSWORD(
   :emausu,
   :pwdusu,
   :seed
+); END;
+`;
+const cambioSql = `BEGIN RECURSOS_PKG.CHANGEPASSWORD(
+  :userid,
+  :pwdusu
 ); END;
 `;
 
@@ -77,18 +77,18 @@ export const remove = async (bind) => {
 
   return bind;
 };
-export const change = async (bind) => {
+export const forgot = async (bind) => {
   try {
-    await simpleExecute(cambioSql, bind);
+    await simpleExecute(olvidoSql, bind);
   } catch (error) {
     bind = null;
   }
 
   return bind;
 };
-export const forgot = async (bind) => {
+export const change = async (bind) => {
   try {
-    await simpleExecute(olvidoSql, bind);
+    await simpleExecute(cambioSql, bind);
   } catch (error) {
     bind = null;
   }

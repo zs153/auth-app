@@ -30,6 +30,9 @@ const deleteFromRec = (req) => {
 const forgotFromRec = (req) => {
   return req.body.context;
 }
+const changeFromRec = (req) => {
+  return req.body.context;
+}
 
 // proc
 export const usuario = async (req, res) => {
@@ -100,6 +103,19 @@ export const remove = async (req, res) => {
 export const forgot = async (req, res) => {
   try {
     const result = await DAL.forgot(forgotFromRec(req))
+
+    if (result !== null) {
+      res.status(200).end()
+    } else {
+      res.status(404).end()
+    }
+  } catch (err) {
+    res.status(500).end()
+  }
+}
+export const change = async (req, res) => {
+  try {
+    const result = await DAL.change(changeFromRec(req))
 
     if (result !== null) {
       res.status(200).end()
