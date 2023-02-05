@@ -1,8 +1,10 @@
 import express from 'express'
 import authRoutes from '../middleware/auth'
 import {
-  autorizar,
-  mainPage,
+  borrar,
+  delPage,
+  newPage,
+  nuevo,
 } from '../controllers/admin.controller'
 
 const adminRouter = express.Router()
