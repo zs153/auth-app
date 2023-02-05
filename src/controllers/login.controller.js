@@ -2,7 +2,7 @@ import axios from "axios";
 import { createPrivateKey } from 'crypto'
 import bcrypt from "bcrypt";
 import { V4 } from 'paseto'
-import { puertoWEB, puertoAPI, serverAPI, serverWEB, privateKey, secreto } from "../config/settings";
+import { puertoAPI, serverAPI, privateKey, secreto } from "../config/settings";
 
 export const loginPage = async (req, res) => {
   const url = req.query.valid

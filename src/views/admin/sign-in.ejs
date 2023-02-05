@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Identificación</title>
+  <title>Gestion de Recursos</title>
   <link rel="icon" href="/img/favicon.ico" type="image/x-icon" />
   <!-- styles -->
   <link rel="stylesheet" href="/css/styles.css">
@@ -24,7 +24,7 @@
       </div>
       <% }) %>
       <% } %>
-      <form class="card card-md" action="/auth/auth" method="POST">
+      <form class="card card-md" action="/admin/auth" method="POST">
         <input type="hidden" name="url" value="<%- datos.url %>">
         <div class="card-body">
           <h2 class="card-title text-center mb-4">Iniciar sesión</h2>
@@ -34,7 +34,7 @@
           </div>
           <div class="mb-2">
             <label class="form-label">Contraseña</label>
-            <input type="password" class="form-control" name="pwdusu" />
+            <input type="password" class="form-control" name="pwdusu" autocomplete="new-password" />
           </div>
           <div class="mb-2">
             <span class="form-label">
