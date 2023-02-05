@@ -6,7 +6,6 @@ import path from 'path'
 // import rutas
 import adminRouter from "./routes/admin.router";
 import mainRouter from "./routes/main.router";
-import usuarioRouter from "./routes/usuario.router";
 import loginRouter from "./routes/login.router";
 
 const app = express();
@@ -25,7 +24,6 @@ app.use(express.static(path.join(__dirname, "/public")));
 // routes
 app.use("/", mainRouter);
 app.use("/admin", adminRouter);
-app.use("/admin", usuarioRouter);
 app.use('/log', loginRouter)
 
 export default app;
