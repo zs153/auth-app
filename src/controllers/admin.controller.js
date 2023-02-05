@@ -27,6 +27,16 @@ export const mainPage = async (req, res) => {
     })
   }
 }
+export const newPage = async (req, res) => {
+  const url = req.query.valid
+
+  res.render('admin/new', { datos: { url } })
+}
+export const delPage = async (req, res) => {
+  const url = req.query.valid
+
+  res.render('admin/del', { datos: { url } })
+}
 
 // proc
 export const autorizar = async (req, res) => {
@@ -89,5 +99,55 @@ export const autorizar = async (req, res) => {
       datos: req.body,
       alerts: [{ msg: 'El usuario no existe' }]
     })
+  }
+}
+export const nuevo = async (req, res) => {
+  const usuario = {
+    USERID: req.body.userid,
+    EMAUSU: req.body.emausu,
+    STAUSU: req.body.stausu,
+  }
+
+  try {
+    const datos = {
+      url: req.body.url,
+    }
+
+    await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/insert`, {
+      usuario,
+    });
+
+    res.render("log/okInsert", {
+      datos
+    });
+  } catch (error) {
+    res.render("error400", {
+      datos: req.body,
+      alerts: [{ msg: 'No se ha podido crear el recurso' }]
+    });
+  }
+}
+export const borrar = async (req, res) => {
+  const usuario = {
+    USERID: req.body.userid,
+  }
+
+  try {
+    const datos = {
+      url: req.body.url,
+    }
+
+    await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/delete`, {
+      usuario,
+    });
+
+    res.render("log/okDelete", {
+      datos
+    });
+  } catch (error) {
+    res.render("error400", {
+      datos: req.body,
+      alerts: [{ msg: 'No se ha podido crear el recurso' }]
+    });
   }
 }
