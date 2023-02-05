@@ -3,7 +3,7 @@ import bcrypt from "bcrypt"
 import { createPrivateKey } from 'crypto'
 import { V4 } from 'paseto'
 import { puertoAPI, serverAPI, privateKey, secreto } from '../config/settings'
-import { estadosUsuario } from '../public/js/enumeraciones'
+import { estadosUsuario, arrEstadosUsuario } from '../public/js/enumeraciones'
 
 export const mainPage = async (req, res) => {
   const user = req.user
@@ -29,8 +29,12 @@ export const mainPage = async (req, res) => {
 }
 export const newPage = async (req, res) => {
   const url = req.query.valid
-
-  res.render('admin/new', { datos: { url } })
+  const datos = {
+    url,
+    arrEstadosUsario,
+  }
+  
+  res.render('admin/new', { datos })
 }
 export const delPage = async (req, res) => {
   const url = req.query.valid
