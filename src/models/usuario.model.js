@@ -14,7 +14,6 @@ const insertSql = `BEGIN RECURSOS_PKG.INSERTUSUARIO(
 `;
 const updateSql = `BEGIN RECURSOS_PKG.UPDATEUSUARIO(
   :userid,
-  :nomusu,
   :emausu, 
   :stausu
 ); END;

@@ -14,7 +14,6 @@ const updateFromRec = (req) => {
   const usuario = {
     userid: req.body.usuario.USERID,
     emausu: req.body.usuario.EMAUSU,
-    rolusu: req.body.usuario.ROLUSU,
     stausu: req.body.usuario.STAUSU,
   }
 
