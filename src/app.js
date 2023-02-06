@@ -4,8 +4,6 @@ import cookieParser from "cookie-parser";
 import path from 'path'
 
 // import rutas
-import adminRouter from "./routes/admin.router";
-import mainRouter from "./routes/main.router";
 import loginRouter from "./routes/login.router";
 
 const app = express();
@@ -22,8 +20,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "/public")));
 
 // routes
-app.use("/", mainRouter);
-app.use("/admin", adminRouter);
 app.use('/log', loginRouter)
 
 export default app;
