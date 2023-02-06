@@ -80,7 +80,7 @@ export const autorizar = async (req, res) => {
           'format': 'pem',
           'type': 'pkcs8',
           'cipher': 'aes-256-cbc',
-          'passphrase': '',
+          'passphrase': secreto,
         })
 
         await V4.sign(payload, key, {
