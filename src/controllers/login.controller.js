@@ -62,10 +62,7 @@ export const autorizar = async (req, res) => {
     usuario = result.data
 
     // verifica contaseña
-    await verify(pwdusu, usuario.PWDUSU, async (err, ret) => {
-      if (err) {
-        throw new Error('No se ha podido verificar la identidad del usuario')
-      }
+    await verify(pwdusu, usuario.PWDUSU).then(async ret => {
       if (ret) {
         const payload = {
           userid: usuario.USERID,
@@ -92,7 +89,9 @@ export const autorizar = async (req, res) => {
       } else {
         throw new Error('La contraseña no es correcta')        
       }
-    })
+    }).catch(err => {
+			throw new Error('No se ha podido verificar la identidad del usuario')
+		})
 
     // bcrypt.compare(pwdusu, usuario.PWDUSU, async (err, ret) => {
     //   if (err) {
