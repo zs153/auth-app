@@ -68,11 +68,9 @@ export const autorizar = async (req, res) => {
           userid: usuario.USERID,
         }
         const key = createPrivateKey({
-          'key': privateKey,
-          'format': 'pem',
-          'type': 'pkcs8',
-          'cipher': 'aes-256-cbc',
-          'passphrase': secreto,
+          key: privateKey,
+          format: 'pem',
+          passphrase: secreto
         })
 
         await V4.sign(payload, key, {
