@@ -43,7 +43,7 @@ export const usuario = async (req, res) => {
     if (result.length === 1) {
       return res.status(200).json(result[0])
     } else {
-      res.status(404).end()
+      res.status(404).end('Usuario no encontrado')
     }
   } catch (err) {
     res.status(500).end()
