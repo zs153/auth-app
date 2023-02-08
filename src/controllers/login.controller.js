@@ -56,13 +56,9 @@ export const autorizar = async (req, res) => {
   }
 
   try {
-		try {
-		  const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
-		    usuario,
-		  });
-		} catch (err) {
-			throw ('El usuario no existe')
-		}
+    const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+      usuario,
+    });
     usuario = result.data
 
     // verifica contaseña
@@ -92,8 +88,8 @@ export const autorizar = async (req, res) => {
         throw ('La contraseña no es correcta')        
       }
     }).catch(err => {
-			throw (err)
-		})
+	throw (err)
+    })
 
     return
   } catch (err) {
