@@ -56,9 +56,13 @@ export const autorizar = async (req, res) => {
   }
 
   try {
-    const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
-      usuario,
-    });
+		try {
+		  const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+		    usuario,
+		  });
+		} catch (err) {
+			throw ('El usuario no existe')
+		}
     usuario = result.data
 
     // verifica contaseña
@@ -85,49 +89,11 @@ export const autorizar = async (req, res) => {
           res.end()
         })
       } else {
-        throw new Error('La contraseña no es correcta')        
+        throw ('La contraseña no es correcta')        
       }
     }).catch(err => {
-			throw new Error('No se ha podido verificar la identidad del usuario')
+			throw (err)
 		})
-
-    // bcrypt.compare(pwdusu, usuario.PWDUSU, async (err, ret) => {
-    //   if (err) {
-    //     res.render('sign-in', {
-    //       datos: req.body,
-    //       alerts: [{ msg: 'No se ha podido verificar la identidad del usuario' }]
-    //     })
-    //   }
-    //   if (ret) {
-    //     const payload = {
-    //       userid: usuario.USERID,
-    //     }
-    //     const key = createPrivateKey({
-    //       'key': privateKey,
-    //       'format': 'pem',
-    //       'type': 'pkcs8',
-    //       'cipher': 'aes-256-cbc',
-    //       'passphrase': secreto,
-    //     })
-
-    //     await V4.sign(payload, key, {
-    //       audience: 'urn:client:claim',
-    //       issuer: 'http://localhost:4000',
-    //       expiresIn: '1 minute',
-    //     }).then(token => {
-    //       res.writeHead(302, {
-    //         'Location': `http://${url}/admin/clean/?valid=${token}`,
-    //         'Content-Type': 'text/plain',
-    //       })
-    //       res.end()
-    //     })
-    //   } else {
-    //     res.render('log/sign-in', {
-    //       datos: req.body,
-    //       alerts: [{ msg: 'La contraseña no es correcta' }]
-    //     })
-    //   }
-    // });
 
     return
   } catch (err) {
@@ -139,8 +105,6 @@ export const autorizar = async (req, res) => {
 }
 export const olvido = async (req, res) => {
   const randomString = Math.random().toString(36).substring(2, 10);
-  // const salt = await bcrypt.genSalt(10);
-  //const passHash = await bcrypt.hash(randomString, salt);
   const passHash = await hash(randomString)
   const context = {
     emausu: req.body.emausu,
@@ -177,11 +141,7 @@ export const change = async (req, res) => {
     usuario = result.data
 
     // verifica contaseña
-    await verify(pwdact, usuario.PWDUSU, async (err,ret) => {
-      if (err) {
-        throw new Error('No se ha podido verificar la identidad del usuario')
-      }
-
+    await verify(pwdact, usuario.PWDUSU).then(async ret => {
       if (ret) {
         const passHash = await hash(req.body.pwdusu);
         const context = {
@@ -205,37 +165,9 @@ export const change = async (req, res) => {
           alerts: [{ msg: 'La contraseña no es correcta' }]
         });
       }
-    })
-
-    // bcrypt.compare(pwdact, usuario.PWDUSU, async (err, ret) => {
-    //   if (err) {
-    //     throw new Error('No se ha podido verificar la identidad del usuario')
-    //   }
-    //   if (ret) {
-    //     const salt = await bcrypt.genSalt(10);
-    //     const passHash = await bcrypt.hash(req.body.pwdusu, salt);
-    //     const context = {
-    //       userid: req.body.userid,
-    //       pwdusu: passHash,
-    //     }
-    //     const datos = {
-    //       url: req.body.url,
-    //     }
-
-    //     await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/change`, {
-    //       context,
-    //     });
-
-    //     res.render("log/okChange", {
-    //       datos
-    //     });
-    //   } else {
-    //     res.render('log/sign-in', {
-    //       datos: req.body,
-    //       alerts: [{ msg: 'La contraseña no es correcta' }]
-    //     });
-    //   }
-    // });
+    }).catch(err => {
+			throw new Error('No se ha podido verificar la identidad del usuario')
+		})
   } catch (error) {
     res.render("log/sign-in", {
       datos: req.body,
@@ -249,7 +181,7 @@ async function hash(password) {
   return new Promise((resolve, reject) => {
     scrypt(password, secreto, 64, (err, derivedKey) => {
       if (err) reject(err);
-      resolve(derivedKey.toString('hex'))
+      resolve(derivedKey.toString('base64'))
     });
   })
 }
@@ -257,7 +189,7 @@ async function verify(password, hash) {
   return new Promise((resolve, reject) => {
     scrypt(password, secreto, 64, (err, derivedKey) => {
       if (err) reject(err);
-      resolve(hash === derivedKey.toString('hex'))
+      resolve(hash === derivedKey.toString('base64'))
     });
   })
 }
