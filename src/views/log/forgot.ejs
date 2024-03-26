@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Identificación</title>
+  <link rel="icon" href="/img/favicon.ico" type="image/x-icon" />
+  <!-- styles -->
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body class="antialiased border-top-wide border-primary d-flex flex-column">
+  <div class="flex-fill d-flex flex-column justify-content-center py-4">
+    <div class="container-tight py-6">
+      <div class="text-center mb-4">
+        <a href="."><img src="/img/resourcesLogo.png" height="36" alt="Recursos" /></a>
+      </div>
+      <form class="card card-md" action="/log/forgot" method="POST" autocomplete="off">
+        <input type="hidden" name="url" value="<%= datos.url %>">
+        <div class="card-body">
+          <h2 class="card-title text-center mb-4">Generar contraseña</h2>
+          <p class="text-muted mb-4">
+            Ingrese su dirección de correo electrónico y su contraseña se
+            restablecerá. Se le enviará por correo electrónico.
+          </p>
+          <div class="mb-3">
+            <label class="form-label">Correo electrónico</label>
+            <input type="text" class="form-control" name="emausu" value="" autofocus />
+          </div>
+          <div class="form-footer">
+            <button type="submit" class="btn btn-primary w-100">Enviarme nueva contraseña</button>
+          </div>
+        </div>
+      </form>
+      <div class="text-center text-muted mt-1">
+        Olvídalo, 
+        <a href="/log/login/?valid=<%= datos.url%>"> volver a la pantalla de inicio</a>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
