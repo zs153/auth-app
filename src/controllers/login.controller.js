@@ -145,10 +145,9 @@ export const registro = async (req, res) => {
 
     res.render('log/okRegister', { datos })
   } catch (error) {
-    console.log(error)
     res.render("log/sign-up", {
       datos,
-      alerts: [{ msg: 'No se ha podido registrar al usuario' }]
+      alerts: [{ msg: 'El usuario no ha podido ser registrado' }]
     });
   }
 }
@@ -173,7 +172,7 @@ export const olvido = async (req, res) => {
   } catch (error) {
     res.render("log/sign-in", {
       datos: req.body,
-      alerts: [{ msg: 'No se ha podido verificar la identidad del usuario' }]
+      alerts: [{ msg: 'No podido ser verificada la identidad del usuario' }]
     });
   }
 }
@@ -214,7 +213,7 @@ export const cambio = async (req, res) => {
         });
       }
     }).catch(err => {
-			throw new Error('No se ha podido verificar la identidad del usuario')
+			throw new Error('No ha podido ser verificada la identidad del usuario')
 		})
   } catch (error) {
     res.render("log/sign-in", {
@@ -258,7 +257,7 @@ export const actualizar = async (req, res) => {
         });
       }
     }).catch(err => {
-			throw new Error('No se ha podido verificar la identidad del usuario')
+			throw new Error('No ha podido ser verificada la identidad del usuario')
 		})
   } catch (error) {
     res.render("log/sign-in", {
