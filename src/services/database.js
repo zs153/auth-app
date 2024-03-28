@@ -7,7 +7,7 @@ const initialize = async () => {
 module.exports.initialize = initialize
 
 const close = async () => {
-  await oracledb.getPool().close(2)
+  await oracledb.getPool().close(10)
 }
 module.exports.close = close
 
@@ -18,8 +18,10 @@ const simpleExecute = (sql, binds = [], opts = {}) => {
     opts.outFormat = oracledb.OBJECT
     opts.autoCommit = true
 
+    const pool = oracledb.getPool()
+
     try {
-      conn = await oracledb.getConnection()
+      conn = await pool.getConnection()
       const result = await conn.execute(sql, binds, opts)
 
       resolve(result)

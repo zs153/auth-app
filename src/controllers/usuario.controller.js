@@ -4,20 +4,13 @@ import * as DAL from '../models/usuario.model'
 export const usuario = async (req, res) => {
   const context = req.body.context
   
+  // proc
   try {
     const result = await DAL.find(context)
-    
-    if (result.stat) {
-      if (result.data.length === 1) {
-        res.status(200).json({ stat: 1, data: result.data[0] })
-      } else {
-        res.status(200).json({ stat: null, data: 'Usuario no encontrado' })
-      }
-    } else {
-      res.status(400).json({ stat: null, data: 'Usuario no encontrado' })
-    }
+
+    res.status(200).json({ stat: 1, data: result })
   } catch (err) {
-    res.status(500).json({ stat: null, data: 'Conexión no estableciada' })
+    res.status(500).json({ stat: 0, data: err.message })
   }
 }
 export const crear = async (req, res) => {
@@ -29,16 +22,13 @@ export const crear = async (req, res) => {
   }
   const context = usuario
 
+  // proc
   try {
     const result = await DAL.insert(context)
 
-    if (result.stat) {
-      res.status(200).json({ stat: 1, data: result.data })
-    } else {
-      res.status(400).json({ stat: null, data: 'Usuario no creado' })
-    }
+    res.status(200).json({ stat: result, data: result })
   } catch (err) {
-    res.status(500).json({ stat: null, data: 'Conexión no estableciada' })
+    res.status(500).json({ stat: 0, data: err.message })
   }
 }
 export const modificar = async (req, res) => {
@@ -49,16 +39,13 @@ export const modificar = async (req, res) => {
   }
   const context = usuario
 
+  // proc
   try {
     const result = await DAL.update(context)
 
-    if (result.stat) {
-      res.status(200).json({ stat: 1, data: result.data })
-    } else {
-      res.status(400).json({ stat: null, data: 'Usuario no actualizado' })
-    }
+    res.status(200).json({ stat: result, data: result })
   } catch (err) {
-    res.status(500).json({ stat: null, data: 'Conexión no estableciada' })
+    res.status(500).json({ stat: 0, data: err.message })
   }
 }
 export const borrar = async (req, res) => {
@@ -72,13 +59,9 @@ export const borrar = async (req, res) => {
   try {
     const result = await DAL.remove(context)
 
-    if (result.stat) {
-      res.status(200).json({ stat: 1, data: result.data })
-    } else {
-      res.status(400).json({ stat: null, data: 'Usuario no eliminado' })
-    }
+    res.status(200).json({ stat: result, data: result })
   } catch (err) {
-    res.status(500).json({ stat: null, data: 'Conexión no estableciada' })
+    res.status(500).json({ stat: 0, data: err.message })
   }
 }
 export const olvido = async (req, res) => {
@@ -89,14 +72,9 @@ export const olvido = async (req, res) => {
   try {
     const result = await DAL.forgot(context)
 
-    if (result.stat) {
-      res.status(200).json({ stat: 1, data: 'Ok' })
-    } else {
-      res.status(400).json({ stat: null, data: 'Contraseña no generada' })
-    }
+    res.status(200).json({ stat: 1, data: result })
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ stat: null, data: 'Conexión no estableciada' })
+    res.status(500).json({ stat: 0, data: err.message })
   }
 }
 export const cambio = async (req, res) => {
@@ -107,12 +85,8 @@ export const cambio = async (req, res) => {
   try {
     const result = await DAL.change(context)
 
-    if (result.stat) {
-      res.status(200).json({ stat: 1, data: 'Ok' })
-    } else {
-      res.status(400).json({ stat: null, data: 'Contraseña no generada' })
-    }
+      res.status(200).json({ stat: 1, data: result })
   } catch (err) {
-    res.status(500).json({ stat: null, data: 'Conexión no estableciada' })
+    res.status(500).json({ stat:0, data: err.message })
   }
 }

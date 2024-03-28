@@ -1,4 +1,4 @@
-import oracledb from "oracledb";
+import { BIND_OUT, NUMBER } from "oracledb";
 import { simpleExecute } from "../services/database.js";
 
 const baseQuery = "SELECT uu.* FROM usuarios uu";
@@ -10,8 +10,8 @@ const cambioSql = "BEGIN RECURSOS_PKG.CHANGEPASSWORD(:userid,:pwdusu); END;";
 
 export const find = async (context) => {
   // bind
-  let bind = {};
   let query = baseQuery;
+  let bind = context;
 
   if (context.USERID) {
     bind.userid = context.USERID;
@@ -24,10 +24,10 @@ export const find = async (context) => {
   // proc
   const ret = await simpleExecute(query, bind)
 
-  if (ret) {
-    return ({ stat: 1, data: ret.rows })
+  if (ret.rows.length) {
+    return ({ stat: ret.rows.length, data: ret.rows })
   } else {
-    return ({ stat: null, data: null })
+    return ({ stat: 0, data: 'El usuario no existe' })
   }
 };
 export const insert = async (context) => {
@@ -37,9 +37,9 @@ export const insert = async (context) => {
   const ret = await simpleExecute(insertSql, bind)
 
   if (ret) {
-    return ({ stat: 1, data: 'Ok' })
+    return ({ stat: 1, data: bind })
   } else {
-    return ({ stat: null, data: err })
+    return ({ stat: 0, data: 'No se ha podido insertar el usuario' })
   }
 };
 export const update = async (context) => {
@@ -49,9 +49,9 @@ export const update = async (context) => {
   const ret = await simpleExecute(updateSql, bind)
 
   if (ret) {
-    return ({ stat: 1, data: 'Ok' })
+    return ({ stat: 1, data: bind })
   } else {
-    return ({ stat: null, data: err })
+    return ({ stat: 0, data: 'No se ha podido actualizar el usuario' })
   }
 };
 export const remove = async (context) => {
@@ -61,9 +61,9 @@ export const remove = async (context) => {
   const ret = await simpleExecute(removeSql, bind)
 
   if (ret) {
-    return ({ stat: 1, data: 'Ok' })
+    return ({ stat: 1, data: bind })
   } else {
-    return ({ stat: null, data: err })
+    return ({ stat: null, data: 'No se ha podido borrar el usuario' })
   }
 };
 export const forgot = async (context) => {
@@ -73,9 +73,9 @@ export const forgot = async (context) => {
   const ret = await simpleExecute(olvidoSql, bind)
 
   if (ret) {
-    return ({ stat: 1, data: 'Ok' })
+    return ({ stat: 1, data: bind })
   } else {
-    return ({ stat: null, data: err })
+    return ({ stat: 0, data: 'No se ha podido generar una contraseña' })
   }
 };
 export const change = async (context) => {
@@ -85,8 +85,8 @@ export const change = async (context) => {
   const ret = await simpleExecute(cambioSql, bind)
 
   if (ret) {
-    return ({ stat: 1, data: 'Ok' })
+    return ({ stat: 1, data: bind })
   } else {
-    return ({ stat: null, data: err })
+    return ({ stat: null, data: "No se ha podido actualizar la contraseña" })
   }
 };
