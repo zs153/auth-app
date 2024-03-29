@@ -71,10 +71,10 @@ export const autorizar = async (req, res) => {
       context,
     });
 
-    if (usuario.data.stat === null) {
+    if (usuario.data.stat === 0) {
       throw ('Usuario no registrado')
     }
-
+    
     // verifica contaseña
     await verify(pwdusu, usuario.data.data.PWDUSU).then(async ret => {
       if (ret) {
