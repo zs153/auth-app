@@ -25,9 +25,9 @@ export const find = async (context) => {
   const ret = await simpleExecute(query, bind)
 
   if (ret.rows.length) {
-    return ({ stat: ret.rows.length, data: ret.rows })
+    return ({ stat: 1, data: ret.rows[0] })
   } else {
-    return ({ stat: 0, data: 'El usuario no existe' })
+    return ({ stat: 0, data: ret })
   }
 };
 export const insert = async (context) => {
@@ -39,7 +39,7 @@ export const insert = async (context) => {
   if (ret) {
     return ({ stat: 1, data: bind })
   } else {
-    return ({ stat: 0, data: 'No se ha podido insertar el usuario' })
+    return ({ stat: 0, data: ret })
   }
 };
 export const update = async (context) => {
@@ -51,7 +51,7 @@ export const update = async (context) => {
   if (ret) {
     return ({ stat: 1, data: bind })
   } else {
-    return ({ stat: 0, data: 'No se ha podido actualizar el usuario' })
+    return ({ stat: 0, data: ret })
   }
 };
 export const remove = async (context) => {
@@ -63,7 +63,7 @@ export const remove = async (context) => {
   if (ret) {
     return ({ stat: 1, data: bind })
   } else {
-    return ({ stat: null, data: 'No se ha podido borrar el usuario' })
+    return ({ stat: 0, data: ret })
   }
 };
 export const forgot = async (context) => {
@@ -75,7 +75,7 @@ export const forgot = async (context) => {
   if (ret) {
     return ({ stat: 1, data: bind })
   } else {
-    return ({ stat: 0, data: 'No se ha podido generar una contraseña' })
+    return ({ stat: 0, data: ret })
   }
 };
 export const change = async (context) => {
@@ -87,6 +87,6 @@ export const change = async (context) => {
   if (ret) {
     return ({ stat: 1, data: bind })
   } else {
-    return ({ stat: null, data: "No se ha podido actualizar la contraseña" })
+    return ({ stat: 0, data: ret })
   }
 };
