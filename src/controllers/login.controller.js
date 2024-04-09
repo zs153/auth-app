@@ -6,42 +6,42 @@ import { puertoAPI, serverAPI, privateKey, secreto } from "../config/settings";
 export const loginPage = async (req, res) => {
   const url = req.query.valid
 
-  res.render('log/sign-in', { datos: { url }, alerts: undefined })
+  res.render('sign-in', { datos: { url }, alerts: undefined })
 }
 export const forgotPage = async (req, res) => {
   const url = req.query.valid
 
-  res.render('log/forgot', { datos: { url } })
+  res.render('forgot', { datos: { url } })
 }
 export const changePage = async (req, res) => {
   const url = req.query.valid
 
-  res.render('log/change', { datos: { url } })
+  res.render('change', { datos: { url } })
 }
 export const updatePage = async (req, res) => {
   const url = req.query.valid
 
-  res.render('log/update', { datos: { url } })
+  res.render('update', { datos: { url } })
 }
 export const registroPage = async (req, res) => {
   const url = req.query.valid
   
-  res.render('log/sign-up', { datos: {url} })
+  res.render('sign-up', { datos: {url} })
 }
 export const okForgotPage = async (req, res) => {
   const url = req.query.valid
 
-  res.render('log/okForgot', { datos: { url } })
+  res.render('okForgot', { datos: { url } })
 }
 export const okChangePage = async (req, res) => {
   const url = req.query.valid
 
-  res.render('log/okChange', { datos: { url } })
+  res.render('okChange', { datos: { url } })
 }
 export const okRegisterPage = async (req, res) => {
   const url = req.query.valid
 
-  res.render('log/okRegister', { datos: { url } })
+  res.render('okRegister', { datos: { url } })
 }
 export const logoutPage = async (req, res) => {
   const options = {
@@ -55,7 +55,7 @@ export const logoutPage = async (req, res) => {
   res.cookie("auth", undefined, options);
   res.cookie("noVer", undefined, options);
 
-  res.render('log/logout')
+  res.render('logout')
 };
 
 // proc
@@ -93,7 +93,7 @@ export const autorizar = async (req, res) => {
           expiresIn: '1 minute',
         }).then(token => {
           res.writeHead(302, {
-            'Location': `http://${url}/clean/?valid=${token}`,
+            'Location': `http://${url}/admin/?valid=${token}`,
             'Content-Type': 'text/plain',
           })
           res.end()
@@ -133,7 +133,7 @@ export const registro = async (req, res) => {
     });
 
     if (result.data.stat) {
-      return res.render("log/sign-in", {
+      return res.render("sign-in", {
         datos,
         alerts: [{ msg: 'Usuario ya registrado' }]
       });
@@ -143,9 +143,9 @@ export const registro = async (req, res) => {
       usuario,
     });
 
-    res.render('log/okRegister', { datos })
+    res.render('okRegister', { datos })
   } catch (error) {
-    res.render("log/sign-up", {
+    res.render("sign-up", {
       datos,
       alerts: [{ msg: 'El usuario no ha podido ser registrado' }]
     });
@@ -168,9 +168,9 @@ export const olvido = async (req, res) => {
       context,
     });
 
-    res.render('log/okForgot', { datos })
+    res.render('okForgot', { datos })
   } catch (error) {
-    res.render("log/sign-in", {
+    res.render("sign-in", {
       datos: req.body,
       alerts: [{ msg: 'No podido ser verificada la identidad del usuario' }]
     });
@@ -203,11 +203,11 @@ export const cambio = async (req, res) => {
           context,
         });
 
-        res.render("log/okChange", {
+        res.render("okChange", {
           datos
         });
       } else {
-        res.render('log/sign-in', {
+        res.render('sign-in', {
           datos: req.body,
           alerts: [{ msg: 'La contraseña no es correcta' }]
         });
@@ -216,7 +216,7 @@ export const cambio = async (req, res) => {
 			throw new Error('No ha podido ser verificada la identidad del usuario')
 		})
   } catch (error) {
-    res.render("log/sign-in", {
+    res.render("sign-in", {
       datos: req.body,
       alerts: [{ msg: error }]
     });
@@ -247,11 +247,11 @@ export const actualizar = async (req, res) => {
           usuario,
         });
 
-        res.render("log/okUpdate", {
+        res.render("okUpdate", {
           datos
         });
       } else {
-        res.render('log/update', {
+        res.render('update', {
           datos: req.body,
           alerts: [{ msg: 'La contraseña no es correcta' }]
         });
@@ -260,7 +260,7 @@ export const actualizar = async (req, res) => {
 			throw new Error('No ha podido ser verificada la identidad del usuario')
 		})
   } catch (error) {
-    res.render("log/sign-in", {
+    res.render("sign-in", {
       datos: req.body,
       alerts: [{ msg: error }]
     });

@@ -9,11 +9,16 @@
   <link rel="icon" href="/img/favicon.ico" type="image/x-icon" />
   <!-- styles -->
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/page.css">
+  <link rel="stylesheet" href="/css/card.css">
+  <link rel="stylesheet" href="/css/btn.css">
+  <link rel="stylesheet" href="/css/alert.css">
+  <link rel="stylesheet" href="/css/form.css">
 </head>
 
-<body class="antialiased border-top-wide border-primary d-flex flex-column">
+<body class="border-top-wide border-primary d-flex flex-column">
   <div class="page page-center">
-    <div class="container-tight py-6">
+    <div class="container container-tight py-6">
       <div class="text-center mb-4">
         <a href="."><img src="/img/resourcesLogo.png" height="36" alt="Recursos" /></a>
       </div>
@@ -24,7 +29,7 @@
           </div>
         <% }) %>
       <% } %>
-      <form class="card card-md" action="/log/autorizar" method="POST">
+      <form class="card card-md" action="/autorizar" method="POST">
         <input type="hidden" name="url" value="<%- datos.url %>">
         <div class="card-body">
           <h2 class="card-title text-center mb-4">Iniciar sesión</h2>

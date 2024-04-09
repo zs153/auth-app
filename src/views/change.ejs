@@ -9,11 +9,17 @@
   <link rel="icon" href="/img/favicon.ico" type="image/x-icon" />
   <!-- styles -->
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/page.css">
+  <link rel="stylesheet" href="/css/card.css">
+  <link rel="stylesheet" href="/css/btn.css">
+  <link rel="stylesheet" href="/css/alert.css">
+  <link rel="stylesheet" href="/css/form.css">
+  <link rel="stylesheet" href="/css/input.css">
 </head>
 
-<body class="antialiased border-top-wide border-primary d-flex flex-column">
+<body class="border-top-wide border-primary d-flex flex-column">
   <div class="page page-center">
-    <div class="container-tight py-6">
+    <div class="container container-tight py-6">
       <div class="text-center mb-4">
         <a href="."><img src="/img/resourcesLogo.png" height="36" alt="Recursos" /></a>
       </div>
@@ -29,11 +35,9 @@
         <div class="card-body">
           <h2 class="card-title text-center mb-4">Cambiar contraseña</h2>
           <div class="mb-2">
-            <div class="input-control">
-              <label class="form-label">Usuario</label>
-              <input type="text" class="form-control" id="userid" name="userid" autofocus autocomplete="off" />
-              <div class="invalid-feedback"></div>
-            </div>
+            <label class="form-label">Usuario</label>
+            <input type="text" class="form-control" id="userid" name="userid" autofocus autocomplete="off" />
+            <div class="invalid-feedback"></div>
           </div>
           <div class="mb-2">
             <label class="form-label">Contraseña actual</label>

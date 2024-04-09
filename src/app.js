@@ -20,6 +20,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "/public")));
 
 // routes
-app.use('/log', loginRouter)
+app.use('/', loginRouter)
 
 export default app;

@@ -4,7 +4,7 @@ import { loginPage, forgotPage, logoutPage, registroPage, autorizar, olvido, okF
 const loginRouter = express.Router()
 
 // auth
-loginRouter.get('/login', loginPage)
+loginRouter.get('/', loginPage)
 loginRouter.get('/forgot', forgotPage)
 loginRouter.get('/logout', logoutPage)
 loginRouter.get('/change', changePage)
