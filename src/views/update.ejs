@@ -9,6 +9,12 @@
   <link rel="icon" href="/img/favicon.ico" type="image/x-icon" />
   <!-- styles -->
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/page.css">
+  <link rel="stylesheet" href="/css/card.css">
+  <link rel="stylesheet" href="/css/boton.css">
+  <link rel="stylesheet" href="/css/alert.css">
+  <link rel="stylesheet" href="/css/form.css">
+  <link rel="stylesheet" href="/css/input.css">
 </head>
 
 <body class="antialiased border-top-wide border-primary d-flex flex-column">
@@ -24,7 +30,7 @@
       </div>
       <% }) %>
       <% } %>
-      <form class="card card-md" action="/log/update" method="POST" onsubmit="return validate();">
+      <form class="card card-md" action="/update" method="POST" onsubmit="return validate();">
         <input type="hidden" name="url" value="<%- datos.url %>">
         <div class="card-body">
           <h2 class="card-title text-center mb-4">Actualizar recurso</h2>
@@ -68,7 +74,7 @@
       </form>
       <div class="text-center text-muted mt-1">
         Olvídalo, 
-        <a href="/log/login/?valid=<%= datos.url%>"> volver a la pantalla de inicio</a>
+        <a href="/?valid=<%= datos.url%>"> volver a la pantalla de inicio</a>
       </div>
     </div>
   </div>

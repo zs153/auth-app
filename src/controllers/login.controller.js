@@ -107,7 +107,7 @@ export const autorizar = async (req, res) => {
 
     return
   } catch (err) {
-    res.render('log/sign-in', {
+    res.render('sign-in', {
       datos: req.body,
       alerts: [{ msg: err }]
     })

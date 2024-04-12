@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="/css/page.css">
   <link rel="stylesheet" href="/css/card.css">
-  <link rel="stylesheet" href="/css/btn.css">
+  <link rel="stylesheet" href="/css/boton.css">
   <link rel="stylesheet" href="/css/form.css">
 </head>
 
@@ -21,7 +21,7 @@
       <div class="text-center mb-4">
         <a href="."><img src="/img/resourcesLogo.png" height="36" alt="Recursos" /></a>
       </div>
-      <form class="card card-md" action="/log/forgot" method="POST" autocomplete="off">
+      <form class="card card-md" action="/forgot" method="POST" autocomplete="off">
         <input type="hidden" name="url" value="<%= datos.url %>">
         <div class="card-body">
           <h2 class="card-title text-center mb-4">Generar contraseña</h2>
@@ -40,7 +40,7 @@
       </form>
       <div class="text-center text-muted mt-1">
         Olvídalo, 
-        <a href="/log/login/?valid=<%= datos.url%>"> volver a la pantalla de inicio</a>
+        <a href="/?valid=<%= datos.url%>"> volver a la pantalla de inicio</a>
       </div>
     </div>
   </div>

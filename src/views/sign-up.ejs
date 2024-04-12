@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="/css/page.css">
   <link rel="stylesheet" href="/css/card.css">
-  <link rel="stylesheet" href="/css/btn.css">
+  <link rel="stylesheet" href="/css/boton.css">
   <link rel="stylesheet" href="/css/alert.css">
   <link rel="stylesheet" href="/css/form.css">
   <link rel="stylesheet" href="/css/input.css">
@@ -31,7 +31,7 @@
           </div>
         <% }) %>
       <% } %>
-      <form class="card card-md" action="/log/register" method="POST" onsubmit="return validate();">
+      <form class="card card-md" action="/register" method="POST" onsubmit="return validate();">
         <input type="hidden" name="url" value="<%- datos.url %>">
         <div class="card-body">
           <h2 class="card-title text-center mb-4">Crear nueva cuenta</h2>
@@ -49,7 +49,7 @@
             <div class="input-group input-group-flat">
               <input type="password" class="form-control" autocomplete="off" name="pwdusu" id="pwdusu" />
               <span class="input-group-text">
-                <a href="#" class="link-secondary" id="togglePassword" data-bs-toggle="tooltip" aria-label="Ver contraseña" data-bs-original-title="Ver contraseña"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                <a href="#" class="link-secondary" id="togglePassword" data-bs-toggle="tooltip" aria-label="Ver contraseña" data-bs-original-title="Ver contraseña">
                   <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path></svg>
                 </a>
               </span>
@@ -65,7 +65,7 @@
       </form>
       <div class="text-center text-muted mt-1">
         ¿Tienes ya una cuenta?
-        <a href="/log/login/?valid=<%= datos.url %>">Identificarme</a>
+        <a href="/?valid=<%= datos.url %>">Identificarme</a>
       </div>
     </div>
   </div>
