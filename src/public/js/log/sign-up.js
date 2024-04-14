@@ -11,11 +11,19 @@ togglePassword.addEventListener('click', function (e) {
 const validate = () => {
   const useridValue = userid.value.trim()
   const pwdusuValue = pwdusu.value.trim()
+  const emausuValue = emausu.value.trim()
 
   if (useridValue === '') {
     setError(userid, 'Usuario requerido')
     setTimeout(function () {
       setSuccess(userid)
+    }, 3000)
+    return false
+  }
+  if (emausuValue === '') {
+    setError(emausu, 'Correo requerido')
+    setTimeout(function () {
+      setSuccess(emausu)
     }, 3000)
     return false
   }

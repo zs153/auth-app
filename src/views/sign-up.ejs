@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="/css/form.css">
   <link rel="stylesheet" href="/css/input.css">
   <link rel="stylesheet" href="/css/tooltip.css">
+  <link rel="stylesheet" href="/css/validate.css">
 </head>
 
 <body class="border-top-wide border-primary d-flex flex-column">
@@ -42,7 +43,8 @@
           </div>
           <div class="mb-3">
             <label class="form-label">Dirección de correo</label>
-            <input type="text" class="form-control text-lowercase" name="emausu" value="" />
+            <input type="text" class="form-control text-lowercase" id="emausu" name="emausu" value="" />
+            <div class="invalid-feedback"></div>
           </div>
           <div class="mb-3">
             <label class="form-label">Contraseña</label>
@@ -71,7 +73,7 @@
   </div>
 
   <script src="/js/log/sign-up.js"></script>
-  <script src="/js/util.min.js"></script>
+  <script src="/js/util.js"></script>
 </body>
 
 </html>
