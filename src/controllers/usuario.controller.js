@@ -8,60 +8,57 @@ export const usuario = async (req, res) => {
   try {
     const result = await DAL.find(context)
 
-    res.status(200).json({ stat: result.stat, data: result.data })
+    res.send({ stat: result.stat, data: result.data })
   } catch (err) {
-    res.status(500).json({ stat: 0, data: err.message })
+    res.send({ stat: 0, data: err.message })
   }
 }
 export const crear = async (req, res) => {
   // context
   const usuario = {
-    USERID: req.body.usuario.USERID,
-    EMAUSU: req.body.usuario.EMAUSU,
-    PWDUSU: req.body.usuario.PWDUSU,
+    USERID: req.body.context.USERID,
+    EMAUSU: req.body.context.EMAUSU,
+    PWDUSU: req.body.context.PWDUSU,
   }
-  const context = usuario
 
   // proc
   try {
-    const result = await DAL.insert(context)
-
-    res.status(200).json({ stat: result.stat, data: result.data })
+    const result = await DAL.insert(usuario)
+    
+    res.send({ stat: result.stat, data: result.data })
   } catch (err) {
-    res.status(500).json({ stat: 0, data: err.message })
+    res.send({ stat: 0, data: err.message })
   }
 }
 export const modificar = async (req, res) => {
   // context
   const usuario = {
-    USERID: req.body.usuario.USERID,
-    EMAUSU: req.body.usuario.EMAUSU,
+    USERID: req.body.context.USERID,
+    EMAUSU: req.body.context.EMAUSU,
   }
-  const context = usuario
 
   // proc
   try {
-    const result = await DAL.update(context)
+    const result = await DAL.update(usuario)
 
-    res.status(200).json({ stat: result.stat, data: result.data })
+    res.send({ stat: result.stat, data: result.data })
   } catch (err) {
-    res.status(500).json({ stat: 0, data: err.message })
+    res.send({ stat: 0, data: err.message })
   }
 }
 export const borrar = async (req, res) => {
   // context
   const usuario = {
-    USERID: req.body.usuario.USERID,
+    USERID: req.body.context.USERID,
   }
-  const context = usuario
 
   // proc
   try {
-    const result = await DAL.remove(context)
+    const result = await DAL.remove(usuario)
 
-    res.status(200).json({ stat: result.stat, data: result.data })
+    res.send({ stat: result.stat, data: result.data })
   } catch (err) {
-    res.status(500).json({ stat: 0, data: err.message })
+    res.send({ stat: 0, data: err.message })
   }
 }
 export const olvido = async (req, res) => {
@@ -71,10 +68,10 @@ export const olvido = async (req, res) => {
   // proc
   try {
     const result = await DAL.forgot(context)
-
-    res.status(200).json({ stat: result.stat, data: result.data })
-  } catch (err) {
-    res.status(500).json({ stat: 0, data: err.message })
+    
+    res.send({ stat: result.stat, data: result.data })
+  } catch (err) {    
+    res.send({ stat: 0, data: err.message })
   }
 }
 export const cambio = async (req, res) => {
@@ -85,8 +82,8 @@ export const cambio = async (req, res) => {
   try {
     const result = await DAL.change(context)
 
-    res.status(200).json({ stat: result.stat, data: result.data })
+    res.send({ stat: result.stat, data: result.data })
   } catch (err) {
-    res.status(500).json({ stat:0, data: err.message })
+    res.send({ stat:0, data: err.message })
   }
 }

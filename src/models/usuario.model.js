@@ -1,4 +1,3 @@
-import { BIND_OUT, NUMBER } from "oracledb";
 import { simpleExecute } from "../services/database.js";
 
 const baseQuery = "SELECT uu.* FROM usuarios uu";
