@@ -14,9 +14,10 @@ export const forgotPage = async (req, res) => {
   res.render('forgot', { datos: { url } })
 }
 export const changePage = async (req, res) => {
+  const user = req.query.user
   const url = req.query.valid
 
-  res.render('change', { datos: { url } })
+  res.render('change', { datos: { user, url } })
 }
 export const updatePage = async (req, res) => {
   const url = req.query.valid
@@ -60,22 +61,16 @@ export const logoutPage = async (req, res) => {
 
 // proc
 export const autorizar = async (req, res) => {
-  const pwdusu = req.body.pwdusu
-  const url = req.body.url
   const context = {
     USERID: req.body.userid.toLowerCase(),
   }
+  const usuario = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+    context,
+  });
 
-  try {
-    const usuario = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
-      context,
-    });
-
-    if (usuario.data.stat === 0) {
-      throw ('Usuario no registrado')
-    }
+  if (usuario.data.stat) {
+    const pwdusu = req.body.pwdusu
     
-    // verifica contaseña
     await verify(pwdusu, usuario.data.data.PWDUSU).then(async ret => {
       if (ret) {
         const payload = {
@@ -92,6 +87,7 @@ export const autorizar = async (req, res) => {
           issuer: 'http://localhost:4000',
           expiresIn: '1 minute',
         }).then(token => {
+          const url = req.body.url
           res.writeHead(302, {
             'Location': `http://${url}/admin/?valid=${token}`,
             'Content-Type': 'text/plain',
@@ -99,95 +95,114 @@ export const autorizar = async (req, res) => {
           res.end()
         })
       } else {
-        throw ('La contraseña no es correcta')
+        res.render("sign-in", {
+          datos: req.body,
+          alerts: [{ msg: "La contraseña no es correcta" }]
+        });
       }
     }).catch(err => {
-	    throw (err)
+      res.render("sign-in", {
+        datos: req.body,
+        alerts: [{ msg: "No se ha podido verificar la contraseña\n" + err }]
+      });
     })
 
     return
-  } catch (err) {
-    res.render('sign-in', {
+  } else {
+    res.render("sign-in", {
       datos: req.body,
-      alerts: [{ msg: err }]
-    })
+      alerts: [{ msg: "No se ha podido identificar al usuario" }]
+    });
   }
 }
 export const registro = async (req, res) => {
-  const passHash = await hash(req.body.pwdusu);
   const context = {
     USERID: req.body.userid.toLowerCase(),
   }
-  const usuario = {
-    USERID: req.body.userid.toLowerCase(),
-    EMAUSU: req.body.emausu.toLowerCase(),
-    PWDUSU: passHash,
-  }
-  const datos = {
-    url: req.body.url,
-  }
+  const usuario = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+    context,
+  });
+  
+  if (usuario.data.stat) {
+    return res.render("sign-in", {
+      datos: req.body,
+      alerts: [{ msg: 'El Usuario ya esta registrado' }]
+    });
+  } else {
+    const passHash = await hash(req.body.pwdusu);
+    const context = {
+      USERID: req.body.userid.toLowerCase(),
+      EMAUSU: req.body.emausu.toLowerCase(),
+      PWDUSU: passHash,
+    }
 
-  try {
-    const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+    const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/insert`, {
       context,
     });
 
     if (result.data.stat) {
-      return res.render("sign-in", {
-        datos,
-        alerts: [{ msg: 'Usuario ya registrado' }]
+      const datos = {
+        url: req.body.url,
+      }
+
+      res.render('okRegister', { datos })
+    } else {
+      res.render("sign-up", {
+        datos: req.body,
+        alerts: [{ msg: 'El usuario no ha podido se registrado\n' + result.data.data }]
       });
     }
-
-    await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/insert`, {
-      usuario,
-    });
-
-    res.render('okRegister', { datos })
-  } catch (error) {
-    res.render("sign-up", {
-      datos,
-      alerts: [{ msg: 'El usuario no ha podido ser registrado' }]
-    });
   }
 }
 export const olvido = async (req, res) => {
-  const randomString = Math.random().toString(36).substring(2, 10);
-  const passHash = await hash(randomString)
   const context = {
     EMAUSU: req.body.emausu.toLowerCase(),
-    PWDUSU: passHash,
-    SEED: randomString,
   }
-  const datos = {
-    url: req.body.url,
-  }
+  const usuario = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+    context,
+  });
 
-  try {
-    await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/forgot`, {
+  if (usuario.data.stat) {
+    const randomString = Math.random().toString(36).substring(2, 10);
+    const passHash = await hash(randomString)
+    const context = {
+      EMAUSU: req.body.emausu.toLowerCase(),
+      PWDUSU: passHash,
+      SEED: randomString,
+    }
+    const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/forgot`, {
       context,
     });
-
-    res.render('okForgot', { datos })
-  } catch (error) {
-    res.render("sign-in", {
+  
+    if (result.data.stat) {
+      const datos = {
+        url: req.body.url,
+      }
+    
+      res.render('okForgot', { datos })
+    } else {
+      res.render("sign-in", {
+        datos: req.body,
+        alerts: [{ msg: 'No se ha podido generar una nueva contraseña\n' + result.data.data }]
+      });
+    }
+  } else {
+    res.render("forgot", {
       datos: req.body,
-      alerts: [{ msg: 'No podido ser verificada la identidad del usuario' }]
+      alerts: [{ msg: "No se ha podido identificar el email" }]
     });
   }
 }
 export const cambio = async (req, res) => {
-  const pwdact = req.body.pwdact
-  let context = {
+  const context = {
     USERID: req.body.userid.toLowerCase(),
   }
-
-  try {
-    const usuario = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
-      context,
-    });
-
-    // verifica contaseña
+  const usuario = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+    context,
+  });
+  
+  if (usuario.data.stat) {
+    const pwdact = req.body.pwdact
     await verify(pwdact, usuario.data.data.PWDUSU).then(async ret => {
       if (ret) {
         const passHash = await hash(req.body.pwdusu);
@@ -195,17 +210,22 @@ export const cambio = async (req, res) => {
           USERID: req.body.userid.toLowerCase(),
           PWDUSU: passHash,
         }
-        const datos = {
-          url: req.body.url,
-        }
-
-        await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/change`, {
+        const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/change`, {
           context,
         });
+        
+        if (result.data.stat) {
+          const datos = {
+            url: req.body.url,
+          }
 
-        res.render("okChange", {
-          datos
-        });
+          res.render("okChange", { datos });
+        } else {
+          res.render("sign-in", {
+            datos: req.body,
+            alerts: [{ msg: 'No se ha podido identificar al usuario\n' + result.data.data }]
+          });
+        }
       } else {
         res.render('sign-in', {
           datos: req.body,
@@ -213,43 +233,50 @@ export const cambio = async (req, res) => {
         });
       }
     }).catch(err => {
-			throw new Error('No ha podido ser verificada la identidad del usuario')
-		})
-  } catch (error) {
+      res.render("sign-in", {
+        datos: req.body,
+        alerts: [{ msg: "No se ha podido verificar la contraseña\n" + err }]
+      });
+    })
+  } else {
     res.render("sign-in", {
       datos: req.body,
-      alerts: [{ msg: error }]
+      alerts: [{ msg: "No se ha podido identificar al usuario\n" + usuario.data.data }]
     });
   }
 }
 export const actualizar = async (req, res) => {
-  const pwdusu = req.body.pwdusu
-
-  try {
-    const usuario = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
-      context: {
-        USERID: req.body.userid.toLowerCase(),
-      }
-    });
-
-    // verifica contaseña
+  const context = {
+    USERID: req.body.userid.toLowerCase(),
+  }
+  const usuario = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+    context,
+  });
+  
+  if (usuario.data.stat) {
+    const pwdusu = req.body.pwdusu
     await verify(pwdusu, usuario.data.data.PWDUSU).then(async ret => {
       if (ret) {
-        const usuario = {
+        const context = {
           USERID: req.body.userid.toLowerCase(),
           EMAUSU: req.body.emausu,
         }
-        const datos = {
-          url: req.body.url,
+        const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/update`, {
+          context,
+        });
+        
+        if (result.data.stat) {
+          const datos = {
+            url: req.body.url,
+          }
+
+          res.render("okUpdate", { datos });
+        } else {
+          res.render("sign-in", {
+            datos: req.body,
+            alerts: [{ msg: 'No se ha podido identificar al usuario\n' + result.data.data }]
+          });
         }
-
-        await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/update`, {
-          usuario,
-        });
-
-        res.render("okUpdate", {
-          datos
-        });
       } else {
         res.render('update', {
           datos: req.body,
@@ -257,13 +284,16 @@ export const actualizar = async (req, res) => {
         });
       }
     }).catch(err => {
-			throw new Error('No ha podido ser verificada la identidad del usuario')
-		})
-  } catch (error) {
+      res.render("sign-in", {
+        datos: req.body,
+        alerts: [{ msg: "No se ha podido verificar la contraseña\n" + err }]
+      });
+    })
+  } else {
     res.render("sign-in", {
       datos: req.body,
-      alerts: [{ msg: error }]
-    });
+      alerts: [{ msg: "No se ha podido identificar al usuario\n" + usuario.data.data }]
+    });    
   }
 }
 

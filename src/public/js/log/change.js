@@ -1,14 +1,14 @@
 const userid = document.getElementById('userid')
 const pwdact = document.getElementById('pwdact')
 const pwdusu = document.getElementById('pwdusu')
-const togglePasswordAct = document.querySelector('#togglePasswordAct');
+//const togglePasswordAct = document.querySelector('#togglePasswordAct');
 const togglePasswordNew = document.querySelector('#togglePasswordNew');
 
-togglePasswordAct.addEventListener('click', function (e) {
-  const type = pwdact.getAttribute('type') === 'password' ? 'text' : 'password';
-  pwdact.setAttribute('type', type);
-  //this.classList.toggle("bi-eye");
-});
+// togglePasswordAct.addEventListener('click', function (e) {
+//   const type = pwdact.getAttribute('type') === 'password' ? 'text' : 'password';
+//   pwdact.setAttribute('type', type);
+//   //this.classList.toggle("bi-eye");
+// });
 togglePasswordNew.addEventListener('click', function (e) {
   const type = pwdusu.getAttribute('type') === 'password' ? 'text' : 'password';
   pwdusu.setAttribute('type', type);

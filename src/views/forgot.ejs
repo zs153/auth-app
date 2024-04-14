@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="/css/card.css">
   <link rel="stylesheet" href="/css/boton.css">
   <link rel="stylesheet" href="/css/form.css">
+  <link rel="stylesheet" href="/css/alert.css">
 </head>
 
 <body class="border-top-wide border-primary d-flex flex-column">
@@ -21,6 +22,13 @@
       <div class="text-center mb-4">
         <a href="."><img src="/img/resourcesLogo.png" height="36" alt="Recursos" /></a>
       </div>
+      <% if(typeof alerts !== 'undefined' ) { %>
+        <% alerts.map(function (alert){ %>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%- alert.msg %>
+          </div>
+        <% }) %>
+      <% } %>
       <form class="card card-md" action="/forgot" method="POST" autocomplete="off">
         <input type="hidden" name="url" value="<%= datos.url %>">
         <div class="card-body">
