@@ -70,7 +70,48 @@ export const autorizar = async (req, res) => {
 
   if (usuario.data.stat) {
     const pwdusu = req.body.pwdusu
-    
+
+    // sincrono
+    scrypt(pwdusu, secreto, 64, (err, derivedKey) => {
+      if (err) {
+        res.render("sign-in", {
+          datos: req.body,
+          alerts: [{ msg: "No se ha podido verificar la contraseña\n" + err }]
+        });
+      }
+      
+      if (usuario.data.data.PWDUSU === derivedKey.toString('base64')) {
+        const payload = {
+          userid: usuario.data.data.USERID,
+        }
+        const key = createPrivateKey({
+          key: privateKey,
+          format: 'pem',
+          passphrase: secreto
+        })
+        
+        V4.sign(payload, key, {
+          audience: 'urn:client:claim',
+          issuer: 'http://localhost:4000',
+          expiresIn: '1 minute',
+        }).then(token => {
+          const url = req.body.url
+          res.writeHead(302, {
+            'Location': `http://${url}/dispat/?valid=${token}`,
+            'Content-Type': 'text/plain',
+          })
+          res.end()
+        })  
+      } else {
+        res.render("sign-in", {
+          datos: req.body,
+          alerts: [{ msg: "La contraseña no es correcta" }]
+        });
+      }
+    });
+
+    /*
+    // asincrono
     await verify(pwdusu, usuario.data.data.PWDUSU).then(async ret => {
       if (ret) {
         const payload = {
@@ -106,7 +147,7 @@ export const autorizar = async (req, res) => {
         alerts: [{ msg: "No se ha podido verificar la contraseña\n" + err }]
       });
     })
-
+    */
     return
   } else {
     res.render("sign-in", {
@@ -170,6 +211,8 @@ export const olvido = async (req, res) => {
       PWDUSU: passHash,
       SEED: randomString,
     }
+
+    console.log('seed...',context.SEED);
     const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/forgot`, {
       context,
     });
@@ -314,3 +357,4 @@ async function verify(password, hash) {
     });
   })
 }
+
