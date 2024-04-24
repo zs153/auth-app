@@ -70,7 +70,6 @@ export const forgot = async (context) => {
   const bind = context
   // proc
   const ret = await simpleExecute(olvidoSql, bind)
-
   if (ret) {
     return ({ stat: 1, data: bind })
   } else {
