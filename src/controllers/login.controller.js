@@ -210,7 +210,6 @@ export const olvido = async (req, res) => {
       SEED: randomString,
     }
 
-    console.log('seed...',context.SEED);
     const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/forgot`, {
       context,
     });
