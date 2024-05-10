@@ -91,8 +91,6 @@ export const autorizar = async (req, res) => {
         })
         
         V4.sign(payload, key, {
-          audience: 'urn:client:claim',
-          issuer: 'http://localhost:4000',
           expiresIn: '1 minute',
         }).then(token => {
           const url = req.body.url
