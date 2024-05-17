@@ -21,70 +21,100 @@ export const find = async (context) => {
   }
 
   // proc
-  const ret = await simpleExecute(query, bind)
-
-  if (ret.rows.length) {
-    return ({ stat: 1, data: ret.rows[0] })
-  } else {
-    return ({ stat: 0, data: ret })
+  try {
+    const ret = await simpleExecute(query, bind)
+  
+    if (ret.rows.length) {
+      return ({ stat: 1, data: ret.rows[0] })
+    } else {
+      return ({ stat: 0, data: ret })
+    }
+  } catch (error) {
+    throw new Error(error)    
   }
 };
 export const insert = async (context) => {
   // bind
   const bind = context
-  // proc
-  const ret = await simpleExecute(insertSql, bind)
 
-  if (ret) {
-    return ({ stat: 1, data: bind })
-  } else {
-    return ({ stat: 0, data: ret })
+  // proc
+  try {
+    const ret = await simpleExecute(insertSql, bind)
+  
+    if (ret) {
+      return ({ stat: 1, data: bind })
+    } else {
+      return ({ stat: 0, data: ret })
+    }
+  } catch (error) {
+    throw new Error(error)        
   }
 };
 export const update = async (context) => {
   // bind
   const bind = context
-  // proc
-  const ret = await simpleExecute(updateSql, bind)
 
-  if (ret) {
-    return ({ stat: 1, data: bind })
-  } else {
-    return ({ stat: 0, data: ret })
+  // proc
+  try {
+    const ret = await simpleExecute(updateSql, bind)
+  
+    if (ret) {
+      return ({ stat: 1, data: bind })
+    } else {
+      return ({ stat: 0, data: ret })
+    }
+  } catch (error) {
+    throw new Error(error)
   }
 };
 export const remove = async (context) => {
   // bind
   const bind = context
-  // proc
-  const ret = await simpleExecute(removeSql, bind)
 
-  if (ret) {
-    return ({ stat: 1, data: bind })
-  } else {
-    return ({ stat: 0, data: ret })
+  // proc
+  try {
+    const ret = await simpleExecute(removeSql, bind)
+  
+    if (ret) {
+      return ({ stat: 1, data: bind })
+    } else {
+      return ({ stat: 0, data: ret })
+    }
+  } catch (error) {
+    throw new Error(error)
   }
 };
 export const forgot = async (context) => {
   // bind
   const bind = context
+
   // proc
-  const ret = await simpleExecute(olvidoSql, bind)
-  if (ret) {
-    return ({ stat: 1, data: bind })
-  } else {
-    return ({ stat: 0, data: ret })
+  try {
+    const ret = await simpleExecute(olvidoSql, bind)
+
+    if (ret) {
+      return ({ stat: 1, data: bind })
+    } else {
+      return ({ stat: 0, data: ret })
+    }
+  } catch (error) {
+    throw new Error(error)
   }
 };
 export const change = async (context) => {
   // bind
   const bind = context
-  // proc
-  const ret = await simpleExecute(cambioSql, bind)
 
-  if (ret) {
-    return ({ stat: 1, data: bind })
-  } else {
-    return ({ stat: 0, data: ret })
+  // proc
+  try {
+    const ret = await simpleExecute(cambioSql, bind)
+  
+    if (ret) {
+      return ({ stat: 1, data: bind })
+    } else {
+      return ({ stat: 0, data: ret })
+    }
+  } catch (error) {
+    throw new Error(error)
   }
 };
