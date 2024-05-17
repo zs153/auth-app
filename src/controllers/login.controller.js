@@ -54,7 +54,6 @@ export const logoutPage = async (req, res) => {
 
   res.clearCookie("x-access_token");
   res.cookie("auth", undefined, options);
-  res.cookie("noVer", undefined, options);
 
   res.render('logout')
 };
@@ -64,95 +63,93 @@ export const autorizar = async (req, res) => {
   const context = {
     USERID: req.body.userid.toLowerCase(),
   }
-  const usuario = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+  await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
     context,
-  });
-
-  if (usuario.data.stat) {
-    const pwdusu = req.body.pwdusu
-
-    // sincrono
-    scrypt(pwdusu, secreto, 64, (err, derivedKey) => {
-      if (err) {
+  }).then(async usuario => {
+    if (usuario.data.stat) {
+      const pwdusu = req.body.pwdusu
+  
+      // sincrono
+      // scrypt(pwdusu, secreto, 64, (err, derivedKey) => {
+      //   if (err) {
+      //     res.render("sign-in", {
+      //       datos: req.body,
+      //       alerts: [{ msg: "No se ha podido verificar la contraseña\n" + err }]
+      //     });
+      //   }
+        
+      //   if (usuario.data.data.PWDUSU === derivedKey.toString('base64')) {
+      //     const payload = {
+      //       userid: usuario.data.data.USERID,
+      //     }
+      //     const key = createPrivateKey({
+      //       key: privateKey,
+      //       format: 'pem',
+      //       passphrase: secreto
+      //     })
+          
+      //     V4.sign(payload, key, {
+      //       expiresIn: '1 minute',
+      //     }).then(token => {
+      //       const url = req.body.url
+      //       res.writeHead(302, {
+      //         'Location': `http://${url}/dispat/?valid=${token}`,
+      //         'Content-Type': 'text/plain',
+      //       })
+      //       res.end()
+      //     })  
+      //   } else {
+      //     res.render("sign-in", {
+      //       datos: req.body,
+      //       alerts: [{ msg: "La contraseña no es correcta" }]
+      //     });
+      //   }
+      // });
+  
+      // asincrono
+      await verify(pwdusu, usuario.data.data.PWDUSU).then(async ret => {
+        if (ret) {
+          const payload = {
+            userid: usuario.data.data.USERID,
+          }
+          const key = createPrivateKey({
+            key: privateKey,
+            format: 'pem',
+            passphrase: secreto
+          })
+          
+          await V4.sign(payload, key, {
+            expiresIn: '1 minute',
+          }).then(token => {
+            const url = req.body.url
+            res.writeHead(302, {
+              'Location': `http://${url}/dispat/?valid=${token}`,
+              'Content-Type': 'text/plain',
+            })
+            res.end()
+          })
+        } else {
+          res.render("sign-in", {
+            datos: req.body,
+            alerts: [{ msg: "La contraseña no es correcta" }]
+          });
+        }
+      }).catch(err => {
         res.render("sign-in", {
           datos: req.body,
           alerts: [{ msg: "No se ha podido verificar la contraseña\n" + err }]
         });
-      }
+      })
       
-      if (usuario.data.data.PWDUSU === derivedKey.toString('base64')) {
-        const payload = {
-          userid: usuario.data.data.USERID,
-        }
-        const key = createPrivateKey({
-          key: privateKey,
-          format: 'pem',
-          passphrase: secreto
-        })
-        
-        V4.sign(payload, key, {
-          expiresIn: '1 minute',
-        }).then(token => {
-          const url = req.body.url
-          res.writeHead(302, {
-            'Location': `http://${url}/dispat/?valid=${token}`,
-            'Content-Type': 'text/plain',
-          })
-          res.end()
-        })  
-      } else {
-        res.render("sign-in", {
-          datos: req.body,
-          alerts: [{ msg: "La contraseña no es correcta" }]
-        });
-      }
-    });
-
-    /*
-    // asincrono
-    await verify(pwdusu, usuario.data.data.PWDUSU).then(async ret => {
-      if (ret) {
-        const payload = {
-          userid: usuario.data.data.USERID,
-        }
-        const key = createPrivateKey({
-          key: privateKey,
-          format: 'pem',
-          passphrase: secreto
-        })
-        
-        await V4.sign(payload, key, {
-          audience: 'urn:client:claim',
-          issuer: 'http://localhost:4000',
-          expiresIn: '1 minute',
-        }).then(token => {
-          const url = req.body.url
-          res.writeHead(302, {
-            'Location': `http://${url}/admin/?valid=${token}`,
-            'Content-Type': 'text/plain',
-          })
-          res.end()
-        })
-      } else {
-        res.render("sign-in", {
-          datos: req.body,
-          alerts: [{ msg: "La contraseña no es correcta" }]
-        });
-      }
-    }).catch(err => {
+      return
+    } else {
       res.render("sign-in", {
         datos: req.body,
-        alerts: [{ msg: "No se ha podido verificar la contraseña\n" + err }]
+        alerts: [{ msg: "No se ha podido identificar al usuario" }]
       });
-    })
-    */
-    return
-  } else {
-    res.render("sign-in", {
-      datos: req.body,
-      alerts: [{ msg: "No se ha podido identificar al usuario" }]
-    });
-  }
+    }
+  });
+
 }
 export const registro = async (req, res) => {
   const context = {
@@ -289,52 +286,52 @@ export const actualizar = async (req, res) => {
   const context = {
     USERID: req.body.userid.toLowerCase(),
   }
-  const usuario = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+  await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
     context,
-  });
-  
-  if (usuario.data.stat) {
-    const pwdusu = req.body.pwdusu
-    await verify(pwdusu, usuario.data.data.PWDUSU).then(async ret => {
-      if (ret) {
-        const context = {
-          USERID: req.body.userid.toLowerCase(),
-          EMAUSU: req.body.emausu,
-        }
-        const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/update`, {
-          context,
-        });
-        
-        if (result.data.stat) {
-          const datos = {
-            url: req.body.url,
+  }).then(async usuario => {
+    if (usuario.data.stat) {
+      const pwdusu = req.body.pwdusu
+      await verify(pwdusu, usuario.data.data.PWDUSU).then(async ret => {
+        if (ret) {
+          const context = {
+            USERID: req.body.userid.toLowerCase(),
+            EMAUSU: req.body.emausu,
           }
-
-          res.render("okUpdate", { datos });
+          await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/update`, {
+            context,
+          }).then(result => {
+            if (result.data.stat) {
+              const datos = {
+                url: req.body.url,
+              }
+    
+              res.render("okUpdate", { datos });
+            } else {
+              res.render("sign-in", {
+                datos: req.body,
+                alerts: [{ msg: 'No se ha podido identificar al usuario\n' + result.data.data }]
+              });
+            }
+          })
         } else {
-          res.render("sign-in", {
+          res.render('update', {
             datos: req.body,
-            alerts: [{ msg: 'No se ha podido identificar al usuario\n' + result.data.data }]
+            alerts: [{ msg: 'La contraseña no es correcta' }]
           });
         }
-      } else {
-        res.render('update', {
+      }).catch(err => {
+        res.render("sign-in", {
           datos: req.body,
-          alerts: [{ msg: 'La contraseña no es correcta' }]
+          alerts: [{ msg: "No se ha podido verificar la contraseña\n" + err }]
         });
-      }
-    }).catch(err => {
+      })
+    } else {
       res.render("sign-in", {
         datos: req.body,
-        alerts: [{ msg: "No se ha podido verificar la contraseña\n" + err }]
-      });
-    })
-  } else {
-    res.render("sign-in", {
-      datos: req.body,
-      alerts: [{ msg: "No se ha podido identificar al usuario\n" + usuario.data.data }]
-    });    
-  }
+        alerts: [{ msg: "No se ha podido identificar al usuario\n" + usuario.data.data }]
+      });    
+    }
+  });
 }
 
 // helpers
