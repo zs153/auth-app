@@ -69,7 +69,7 @@ export const autorizar = async (req, res) => {
     if (usuario.data.stat) {
       const pwdusu = req.body.pwdusu
   
-      // sincrono
+      //sincrono
       // scrypt(pwdusu, secreto, 64, (err, derivedKey) => {
       //   if (err) {
       //     res.render("sign-in", {
@@ -127,6 +127,11 @@ export const autorizar = async (req, res) => {
               'Content-Type': 'text/plain',
             })
             res.end()
+          }).catch(err => {
+            res.render("sign-in", {
+              datos: req.body,
+              alerts: [{ msg: "No se ha podido firmar el token\n" + err }]
+            });
           })
         } else {
           res.render("sign-in", {
