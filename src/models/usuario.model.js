@@ -27,10 +27,10 @@ export const find = async (context) => {
     if (ret.rows.length) {
       return ({ stat: 1, data: ret.rows[0] })
     } else {
-      return ({ stat: 0, data: ret })
+      return ({ stat: 0, data: 'Usuario no encontrado' })
     }
   } catch (error) {
-    throw new Error(error)    
+    throw new Error({stat: 0, data: error})
   }
 };
 export const insert = async (context) => {
@@ -47,7 +47,7 @@ export const insert = async (context) => {
       return ({ stat: 0, data: ret })
     }
   } catch (error) {
-    throw new Error(error)        
+    throw new Error({stat: 0, data: error})       
   }
 };
 export const update = async (context) => {
@@ -64,7 +64,7 @@ export const update = async (context) => {
       return ({ stat: 0, data: ret })
     }
   } catch (error) {
-    throw new Error(error)
+    throw new Error({stat: 0, data: error})
   }
 };
 export const remove = async (context) => {
@@ -81,7 +81,7 @@ export const remove = async (context) => {
       return ({ stat: 0, data: ret })
     }
   } catch (error) {
-    throw new Error(error)
+    throw new Error({stat: 0, data: error})
   }
 };
 export const forgot = async (context) => {
@@ -98,7 +98,7 @@ export const forgot = async (context) => {
       return ({ stat: 0, data: ret })
     }
   } catch (error) {
-    throw new Error(error)
+    throw new Error({stat: 0, data: error})
   }
 };
 export const change = async (context) => {
@@ -115,6 +115,6 @@ export const change = async (context) => {
       return ({ stat: 0, data: ret })
     }
   } catch (error) {
-    throw new Error(error)
+    throw new Error({stat: 0, data: error})
   }
 };
