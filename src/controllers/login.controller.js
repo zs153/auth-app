@@ -130,13 +130,13 @@ export const autorizar = async (req, res) => {
                 'Content-Type': 'text/plain',
               })
               res.end()
-            }).catch(err => {
+            }).catch(() => {
               throw new Error("No se ha podido firmar el token")
             })
           } else {
             throw new Error("La contraseña no es correcta")
           }
-        }).catch(err => {
+        }).catch(() => {
           throw new Error("No se ha podido verificar la contraseña")
         });
       } else {
