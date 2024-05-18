@@ -60,101 +60,95 @@ export const logoutPage = async (req, res) => {
 
 // proc
 export const autorizar = async (req, res) => {
-  const context = {
-    USERID: req.body.userid.toLowerCase(),
-  }
-  await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
-    context,
-  }).then(async usuario => {
-    if (usuario.data.stat) {
-      const pwdusu = req.body.pwdusu
-  
-      //sincrono
-      // scrypt(pwdusu, secreto, 64, (err, derivedKey) => {
-      //   if (err) {
-      //     res.render("sign-in", {
-      //       datos: req.body,
-      //       alerts: [{ msg: "No se ha podido verificar la contraseña\n" + err }]
-      //     });
-      //   }
-        
-      //   if (usuario.data.data.PWDUSU === derivedKey.toString('base64')) {
-      //     const payload = {
-      //       userid: usuario.data.data.USERID,
-      //     }
-      //     const key = createPrivateKey({
-      //       key: privateKey,
-      //       format: 'pem',
-      //       passphrase: secreto
-      //     })
-          
-      //     V4.sign(payload, key, {
-      //       expiresIn: '1 minute',
-      //     }).then(token => {
-      //       const url = req.body.url
-      //       res.writeHead(302, {
-      //         'Location': `http://${url}/dispat/?valid=${token}`,
-      //         'Content-Type': 'text/plain',
-      //       })
-      //       res.end()
-      //     })  
-      //   } else {
-      //     res.render("sign-in", {
-      //       datos: req.body,
-      //       alerts: [{ msg: "La contraseña no es correcta" }]
-      //     });
-      //   }
-      // });
-  
-      // asincrono
-      await verify(pwdusu, usuario.data.data.PWDUSU).then(async ret => {
-        if (ret) {
-          const payload = {
-            userid: usuario.data.data.USERID,
-          }
-          const key = createPrivateKey({
-            key: privateKey,
-            format: 'pem',
-            passphrase: secreto
-          })
-          
-          await V4.sign(payload, key, {
-            expiresIn: '1 minute',
-          }).then(token => {
-            const url = req.body.url
-            res.writeHead(302, {
-              'Location': `http://${url}/dispat/?valid=${token}`,
-              'Content-Type': 'text/plain',
-            })
-            res.end()
-          }).catch(err => {
-            res.render("sign-in", {
-              datos: req.body,
-              alerts: [{ msg: "No se ha podido firmar el token\n" + err }]
-            });
-          })
-        } else {
-          res.render("sign-in", {
-            datos: req.body,
-            alerts: [{ msg: "La contraseña no es correcta" }]
-          });
-        }
-      }).catch(err => {
-        res.render("sign-in", {
-          datos: req.body,
-          alerts: [{ msg: "No se ha podido verificar la contraseña\n" + err }]
-        });
-      })
-      
-      return
-    } else {
-      res.render("sign-in", {
-        datos: req.body,
-        alerts: [{ msg: "No se ha podido identificar al usuario" }]
-      });
-    }
-  });
+  // version DFB (sin modulo cryptografico)
+  // try {
+  //   const context = {
+  //     USERID: req.body.userid.toLowerCase(),
+  //   }
+  //   await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+  //     context,
+  //   }).then(async usuario => {
+  //     if (usuario.data.stat) {
+  //       const pwdusu = req.body.pwdusu
 
+  //       await verify(pwdusu, usuario.data.data.PWDUSU).then(async ret => {
+  //         if (ret) {
+  //             const url = req.body.url
+  //             const token = usuario.data.data.USERID
+  //             res.writeHead(302, {
+  //               'Location': `http://${url}/dispat?valid=${token}`,
+  //               'Content-Type': 'text/plain',
+  //             })
+  //             res.end()
+  //         } else {
+  //           throw new Error("La contraseña no es correcta")
+  //         }
+  //       });
+        
+  //       return
+  //     } else {
+  //       throw new Error(usuario.data.data)
+  //     }
+  //   });
+  // } catch (error) {
+  //   res.render("sign-in", {
+  //     datos: req.body,
+  //     alerts: [{ msg: error }]
+  //   });
+  // }
+
+  // version produccion
+  try {
+    const context = {
+      USERID: req.body.userid.toLowerCase(),
+    }
+
+    await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+      context,
+    }).then(async usuario => {
+      if (usuario.data.stat) {
+        const pwdusu = req.body.pwdusu
+    
+        // asincrono
+        await verify(pwdusu, usuario.data.data.PWDUSU).then(async ret => {
+          if (ret) {
+            const payload = {
+              userid: usuario.data.data.USERID,
+            }
+            const key = createPrivateKey({
+              key: privateKey,
+              format: 'pem',
+              passphrase: secreto
+            })
+            
+            await V4.sign(payload, key, {
+              expiresIn: '1 minute',
+            }).then(token => {
+              const url = req.body.url
+              res.writeHead(302, {
+                'Location': `http://${url}/dispat/?valid=${token}`,
+                'Content-Type': 'text/plain',
+              })
+              res.end()
+            }).catch(err => {
+              throw new Error("No se ha podido firmar el token")
+            })
+          } else {
+            throw new Error("La contraseña no es correcta")
+          }
+        }).catch(err => {
+          throw new Error("No se ha podido verificar la contraseña")
+        });
+      } else {
+        throw new Error("Usuario no encontrado")
+      }
+    })
+  } catch (error) {    
+    res.render("sign-in", {
+      datos: req.body,
+      alerts: [{ msg: error }]
+    });
+  }
 }
 export const registro = async (req, res) => {
   const context = {
