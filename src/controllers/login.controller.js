@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createPrivateKey, scrypt } from 'crypto'
+import { createPrivateKey, scrypt, scryptSync } from 'crypto'
 import { V4 } from 'paseto'
 import { puertoAPI, serverAPI, privateKey, secreto } from "../config/settings";
 
@@ -108,13 +108,14 @@ export const autorizar = async (req, res) => {
     }).then(async usuario => {
       if (usuario.data.stat) {
         const pwdusu = req.body.pwdusu
+        const payload = {
+          userid: usuario.data.data.USERID,
+        }
     
-        // asincrono
-        await verify(pwdusu, usuario.data.data.PWDUSU).then(async ret => {
-          if (ret) {
-            const payload = {
-              userid: usuario.data.data.USERID,
-            }
+        // sincrono
+        const result = scryptSync(pwdusu, secreto, 64)
+        if (result) {
+          if (usuario.data.data.PWDUSU === result.toString('base64')) {
             const key = createPrivateKey({
               key: privateKey,
               format: 'pem',
@@ -136,9 +137,40 @@ export const autorizar = async (req, res) => {
           } else {
             throw new Error("La contraseña no es correcta")
           }
-        }).catch(() => {
+        } else {
           throw new Error("No se ha podido verificar la contraseña")
-        });
+        }
+
+        // asincrono
+        // await verify(pwdusu, usuario.data.data.PWDUSU).then(async ret => {
+        //   if (ret) {
+        //     const payload = {
+        //       userid: usuario.data.data.USERID,
+        //     }
+        //     const key = createPrivateKey({
+        //       key: privateKey,
+        //       format: 'pem',
+        //       passphrase: secreto
+        //     })
+            
+        //     await V4.sign(payload, key, {
+        //       expiresIn: '1 minute',
+        //     }).then(token => {
+        //       const url = req.body.url
+        //       res.writeHead(302, {
+        //         'Location': `http://${url}/dispat/?valid=${token}`,
+        //         'Content-Type': 'text/plain',
+        //       })
+        //       res.end()
+        //     }).catch(() => {
+        //       throw new Error("No se ha podido firmar el token")
+        //     })
+        //   } else {
+        //     throw new Error("La contraseña no es correcta")
+        //   }
+        // }).catch(() => {
+        //   throw new Error("No se ha podido verificar la contraseña")
+        // });
       } else {
         throw new Error("Usuario no encontrado")
       }
