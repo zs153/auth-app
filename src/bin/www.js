@@ -22,16 +22,6 @@ const normalizePort = (val) => {
   return false;
 };
 
-// Certificate
-// const privateKey = fs.readFileSync('./../ssl/key.pem', 'utf8');
-// const certificate = fs.readFileSync('./../ssl/cert.pem', 'utf8');
-// const ca = fs.readFileSync('./../ssl/csr.pem', 'utf8')
-// const credentials = {
-//   key: privateKey,
-//   cert: certificate,
-//   ca
-// };
-
 /**
  * Get port from environment and store in Express.
  */
