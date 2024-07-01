@@ -2,10 +2,9 @@
 /**
  * Module dependencies.
  */
-import fs from "fs";
 import http from "http";
 import app from "../app";
-import { puertoWEB } from '../config/settings'
+import { puerto } from '../config/settings'
 
 /**
  * Normalize a port into a number, string, or false.
@@ -36,7 +35,7 @@ const normalizePort = (val) => {
 /**
  * Get port from environment and store in Express.
  */
-const port = normalizePort(puertoWEB || "9000");
+const port = normalizePort(puerto || "9000");
 app.set("port", port);
 
 /**

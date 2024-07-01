@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createPrivateKey, scrypt, scryptSync } from 'crypto'
 import { V4 } from 'paseto'
-import { puertoAPI, serverAPI, privateKey, secretoKey} from "../config/settings";
+import { serverAPI, privateKey, secretoKey} from "../config/settings";
 
 export const loginPage = async (req, res) => {
   const url = req.query.valid
@@ -66,7 +66,7 @@ export const autorizar = async (req, res) => {
   
   // version DFB (sin modulo cryptografico)
   // try {
-  //   await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+  //   await axios.post(`http://${serverAPI}/api/usuario`, {
   //     context,
   //   }).then(async usuario => {
   //     if (usuario.data.stat) {
@@ -102,7 +102,7 @@ export const autorizar = async (req, res) => {
       USERID: req.body.userid.toLowerCase(),
     }
 
-    await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+    await axios.post(`http://${serverAPI}/api/usuario`, {
       context,
     }).then(async usuario => {
       if (usuario.data.stat) {
@@ -154,7 +154,7 @@ export const registro = async (req, res) => {
   const context = {
     USERID: req.body.userid.toLowerCase(),
   }
-  const usuario = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+  const usuario = await axios.post(`http://${serverAPI}/api/usuario`, {
     context,
   });
   
@@ -171,7 +171,7 @@ export const registro = async (req, res) => {
       PWDUSU: passHash,
     }
 
-    const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/insert`, {
+    const result = await axios.post(`http://${serverAPI}/api/usuarios/insert`, {
       context,
     });
 
@@ -193,7 +193,7 @@ export const olvido = async (req, res) => {
   const context = {
     EMAUSU: req.body.emausu.toLowerCase(),
   }
-  const usuario = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+  const usuario = await axios.post(`http://${serverAPI}/api/usuario`, {
     context,
   });
 
@@ -206,7 +206,7 @@ export const olvido = async (req, res) => {
       SEED: randomString,
     }
 
-    const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/forgot`, {
+    const result = await axios.post(`http://${serverAPI}/api/usuarios/forgot`, {
       context,
     });
   
@@ -233,7 +233,7 @@ export const cambio = async (req, res) => {
   const context = {
     USERID: req.body.userid.toLowerCase(),
   }
-  const usuario = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+  const usuario = await axios.post(`http://${serverAPI}/api/usuario`, {
     context,
   });
   
@@ -246,7 +246,7 @@ export const cambio = async (req, res) => {
           USERID: req.body.userid.toLowerCase(),
           PWDUSU: passHash,
         }
-        const result = await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/change`, {
+        const result = await axios.post(`http://${serverAPI}/api/usuarios/change`, {
           context,
         });
         
@@ -285,7 +285,7 @@ export const actualizar = async (req, res) => {
   const context = {
     USERID: req.body.userid.toLowerCase(),
   }
-  await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuario`, {
+  await axios.post(`http://${serverAPI}/api/usuario`, {
     context,
   }).then(async usuario => {
     if (usuario.data.stat) {
@@ -296,7 +296,7 @@ export const actualizar = async (req, res) => {
             USERID: req.body.userid.toLowerCase(),
             EMAUSU: req.body.emausu,
           }
-          await axios.post(`http://${serverAPI}:${puertoAPI}/api/usuarios/update`, {
+          await axios.post(`http://${serverAPI}/api/usuarios/update`, {
             context,
           }).then(result => {
             if (result.data.stat) {
