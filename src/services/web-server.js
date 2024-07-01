@@ -1,10 +1,10 @@
 import http from 'http'
-// import path from "path";
+// import
 import logger from 'morgan'
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import { puertoAPI } from '../config/settings'
+import { puerto } from '../config/settings'
 // rutas
 import apiUsuarioRouter from "../routes/usuario.router";
 
@@ -31,22 +31,17 @@ function initialize() {
     const app = express()
     httpServer = http.createServer(app)
 
-    // view engine setup
-    // app.set("views", path.join(__dirname, "../views"));
-    // app.set("view engine", "ejs");
-
     // middleware
     app.use(logger('dev'))
     app.use(express.json())
     app.use(express.urlencoded({ extended: true }))
     app.use(cookieParser())
     app.use(cors())
-    // app.use(express.static(path.join(__dirname, "../public")));
 
     // routes
     app.use("/api", apiUsuarioRouter)
 
-    const port = normalizePort(puertoAPI || "4601");
+    const port = normalizePort(puerto || "9001");
 
     // server
     httpServer
