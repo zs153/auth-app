@@ -19,6 +19,6 @@ loginRouter.post("/autorizar", autorizar)
 loginRouter.post("/register", registro)
 loginRouter.post("/change", cambio)
 loginRouter.post("/update", actualizar)
-loginRouter.post("/forgot", olvido)
+loginRouter.post("/olvido", olvido)
 
 export default loginRouter;
