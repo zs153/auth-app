@@ -5,7 +5,7 @@ const loginRouter = express.Router()
 
 // auth
 loginRouter.get('/', loginPage)
-loginRouter.get('/forgot', forgotPage)
+loginRouter.get('/olvido', forgotPage)
 loginRouter.get('/logout', logoutPage)
 loginRouter.get('/change', changePage)
 loginRouter.get('/update', updatePage)
